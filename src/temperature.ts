@@ -1,8 +1,5 @@
 'use strict'
-
-const round = (value: number, decimalPlaces: number = 10) => {
-    return Math.round(value * (10 ** decimalPlaces)) / (10 ** decimalPlaces);
-}
+import { round } from "./common";
 
 const to = (kelvin: number) => { //kelvin
     

@@ -1,10 +1,10 @@
 import Big from 'big.js';
 
-import UK, { toUK } from './length.UK';
-import US, { toUS } from './length.US';
-import Nautical, { toNautical } from './length.nautical';
-import Special, { toSpecial } from './length.special';
-import SI, { toSI } from './length.SI';
+import { toUK } from './length.UK';
+import { toUS } from './length.US';
+import { toNautical } from './length.nautical';
+import { toSpecial } from './length.special';
+import { toMetric } from './length.metric';
 
 // Set the decimal places to a higher value
 Big.DP = 40;
@@ -47,7 +47,7 @@ export const toAstronomical = (value: Big) => {
         ld: function(): number { return this.toLightDay(); },
         lw: function(): number { return this.toLightWeek(); },
 
-        toSI: () => toSI(value.toNumber()),
+        toMetric: () => toMetric(value.toNumber()),
         toUK: () => toUK(value.toNumber()),
         toUS: () => toUS(value.toNumber()),
         toNautical: () => toNautical(value.toNumber()),

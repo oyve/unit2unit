@@ -1,7 +1,7 @@
 'use strict'
 
 import { round } from './common';
-import lengthSI from './length/length.SI';
+import lengthSI from './length/length.metric';
 
 const SPEED_RATIOS: { [key: string]: number } = { // to the meter per second
     meterPerSecond: 1,

@@ -1,10 +1,10 @@
 import Big from 'big.js';
 
-import UK, { toUK } from './length.UK';
-import US, { toUS } from './length.US';
-import Astronomical, { toAstronomical } from "./length.astronomical";
-import Special, { toSpecial } from './length.special';
-import SI, { toSI } from './length.SI';
+import { toUK } from './length.UK';
+import { toUS } from './length.US';
+import { toAstronomical } from "./length.astronomical";
+import { toSpecial } from './length.special';
+import { toMetric } from './length.metric';
 
 const NAUTICAL_RATIOS: { [key: string]: number } = { //to the meter
 	foot: 0.3048, //equals UK foot
@@ -34,7 +34,7 @@ export const toNautical = (value: number) => {
 		nlg: function() { return this.toNauticalLeague(); },
 		nmi: function() { return this.toNauticalMile(); },
 
-		toSI: () => toSI(value),
+		toMetric: () => toMetric(value),
 		toUK: () => toUK(value),
 		toUS: () => toUS(value),
 		toAstronomical: () => toAstronomical(new Big(value)),

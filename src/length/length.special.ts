@@ -1,10 +1,10 @@
 import Big from 'big.js';
 
-import SI, { toSI } from './length.SI';
-import UK, { toUK } from './length.UK';
-import US, { toUS } from './length.US';
-import Nautical, { toNautical } from './length.nautical';
-import Astronomical, { toAstronomical } from "./length.astronomical";
+import { toMetric } from './length.metric';
+import { toUK } from './length.UK';
+import { toUS } from './length.US';
+import { toNautical } from './length.nautical';
+import { toAstronomical } from "./length.astronomical";
 
 const SPECIAL_RATIOS: { [key: string]: number } = { //to the meter
     hectometer: 10 ** 2,
@@ -34,7 +34,7 @@ export const toSpecial = (value: number) => {
         b: function() { return this.toBohr(); },
         c: function() { return this.toCubit(); },
 
-        toSI: () => toSI(value),
+        toMetric: () => toMetric(value),
         toUK: () => toUK(value),
         toUS: () => toUS(value),
         toNautical: () => toNautical(value),

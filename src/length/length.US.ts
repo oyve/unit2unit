@@ -1,10 +1,10 @@
 import Big from 'big.js';
 
-import SI, { toSI } from './length.SI'
-import UK, { toUK } from './length.UK';
-import Nautical, { toNautical } from './length.nautical';
-import Special, { toSpecial } from './length.special';
-import Astronomical, { toAstronomical } from "./length.astronomical";
+import { toMetric } from './length.metric'
+import { toUK } from './length.UK';
+import { toNautical } from './length.nautical';
+import { toSpecial } from './length.special';
+import { toAstronomical } from "./length.astronomical";
 
 const US_RATIOS: { [key: string]: number } = { //to the meter
 	inch: 0.00254,
@@ -37,7 +37,7 @@ export const toUS = (value: number) => {
         ch: function(): number { return this.toChain(); },
         fur: function(): number { return this.toFurlong(); },
 
-        toSI: () => toSI(value),
+        toMetric: () => toMetric(value),
         toUK: () => toUK(value),
         toNautical: () => toNautical(value),
         toSpecial: () => toSpecial(value),

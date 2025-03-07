@@ -1,10 +1,10 @@
 import Big from 'big.js';
 
-import UK, { toUK } from './length.UK';
-import US, { toUS } from './length.US';
-import Nautical, { toNautical } from './length.nautical';
-import Special, { toSpecial } from './length.special';
-import Astronomical, { toAstronomical } from './length.astronomical';
+import { toUK } from './length.UK';
+import { toUS } from './length.US';
+import { toNautical } from './length.nautical';
+import { toSpecial } from './length.special';
+import { toAstronomical } from './length.astronomical';
 import { round } from '../common';
 
 const SI_RATIOS: { [key: string]: number } = {
@@ -25,7 +25,7 @@ const SI_RATIOS: { [key: string]: number } = {
     exameter: 10 ** 18,
 };
 
-export const toSI = (value: number) => {
+export const toMetric = (value: number) => {
     return {
         toFemtometer: (decimalPlaces?: number): number => round(value / SI_RATIOS.femtometer, decimalPlaces),
         toPicometer: (decimalPlaces?: number): number => round(value / SI_RATIOS.picometer, decimalPlaces),
@@ -68,21 +68,21 @@ export const toSI = (value: number) => {
 };
 
 export default {
-    femtometer: (value: number) => toSI(value * SI_RATIOS.femtometer),
-    picometer: (value: number) => toSI(value * SI_RATIOS.picometer),
-    nanometer: (value: number) => toSI(value * SI_RATIOS.nanometer),
-    micrometer: (value: number) => toSI(value * SI_RATIOS.micrometer),
-    millimeter: (value: number) => toSI(value * SI_RATIOS.millimeter),
-    centimeter: (value: number) => toSI(value * SI_RATIOS.centimeter),
-    decimeter: (value: number) => toSI(value * SI_RATIOS.decimeter),
-    meter: (value: number) => toSI(value),
-    hectometer: (value: number) => toSI(value * SI_RATIOS.hectometer),
-    kilometer: (value: number) => toSI(value * SI_RATIOS.kilometer),
-    megameter: (value: number) => toSI(value * SI_RATIOS.megameter),
-    gigameter: (value: number) => toSI(value * SI_RATIOS.gigameter),
-    terameter: (value: number) => toSI(value * SI_RATIOS.terameter),
-    petameter: (value: number) => toSI(value * SI_RATIOS.petameter),
-    exameter: (value: number) => toSI(value * SI_RATIOS.exameter),
+    femtometer: (value: number) => toMetric(value * SI_RATIOS.femtometer),
+    picometer: (value: number) => toMetric(value * SI_RATIOS.picometer),
+    nanometer: (value: number) => toMetric(value * SI_RATIOS.nanometer),
+    micrometer: (value: number) => toMetric(value * SI_RATIOS.micrometer),
+    millimeter: (value: number) => toMetric(value * SI_RATIOS.millimeter),
+    centimeter: (value: number) => toMetric(value * SI_RATIOS.centimeter),
+    decimeter: (value: number) => toMetric(value * SI_RATIOS.decimeter),
+    meter: (value: number) => toMetric(value),
+    hectometer: (value: number) => toMetric(value * SI_RATIOS.hectometer),
+    kilometer: (value: number) => toMetric(value * SI_RATIOS.kilometer),
+    megameter: (value: number) => toMetric(value * SI_RATIOS.megameter),
+    gigameter: (value: number) => toMetric(value * SI_RATIOS.gigameter),
+    terameter: (value: number) => toMetric(value * SI_RATIOS.terameter),
+    petameter: (value: number) => toMetric(value * SI_RATIOS.petameter),
+    exameter: (value: number) => toMetric(value * SI_RATIOS.exameter),
 
     fm: function(value: number) { return this.femtometer(value).toFemtometer(); },
     pm: function(value: number) { return this.picometer(value).toPicometer(); },

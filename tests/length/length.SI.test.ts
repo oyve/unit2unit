@@ -1,4 +1,4 @@
-import SI from '../../src/length/length.SI';
+import SI from '../../src/length/length.metric';
 
 describe('SI Length Conversions', () => {
     test('test', () => {

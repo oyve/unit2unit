@@ -1,5 +1,6 @@
 'use strict';
 import Big from 'big.js';
+import { roundBig } from './common';
 
 // Set the decimal places to a higher value
 Big.DP = 40;
@@ -19,27 +20,23 @@ const BIT_TO_PEBIBYTE = 9007199254740992; // 8 * 1024 * 1024 * 1024 * 1024 * 102
 const BIT_TO_EXABYTE = 8000000000000000000; // 8 * 1000 * 1000 * 1000 * 1000 * 1000 * 1000 bits in an exabyte
 const BIT_TO_EXBIBYTE = 9223372036854775808; // 8 * 1024 * 1024 * 1024 * 1024 * 1024 * 1024 bits in an exbibyte
 
-const round = (value: Big, decimalPlaces: number = 10) => {
-    return parseFloat(value.toFixed(decimalPlaces));
-}
-
-const to = (value: Big, decimalPlaces: number = 40) => {
+const to = (value: Big) => {
     return {
-        toBit: (): number => round(value, decimalPlaces),
-        toNibble: (): number => round(value.div(BIT_TO_NIBBLE), decimalPlaces), // 4
-        toByte: (): number => round(value.div(BIT_TO_BYTE),  decimalPlaces), // 8
-        toKilobyte: (): number => round(value.div(BIT_TO_KILOBYTE), decimalPlaces), // 8 * 1000
-        toKibibyte: () => round(value.div(BIT_TO_KIBIBYTE), decimalPlaces), // 8 * 1024
-        toMegabyte: () => round(value.div(BIT_TO_MEGABYTE), decimalPlaces), // 8 * 1000 * 1000
-        toMebibyte: () => round(value.div(BIT_TO_MEBIBYTE), decimalPlaces), // 8 * 1024 * 1024
-        toGigabyte: () => round(value.div(BIT_TO_GIGABYTE), decimalPlaces), // 8 * 1000 * 1000 * 1000
-        toGibibyte: () => round(value.div(BIT_TO_GIBIBYTE), decimalPlaces), // 8 * 1024 * 1024 * 1024
-        toTerabyte: () => round(value.div(BIT_TO_TERABYTE), decimalPlaces), // 8 * 1000 * 1000 * 1000 * 1000
-        toTebibyte: () => round(value.div(BIT_TO_TEBIBYTE), decimalPlaces), // 8 * 1024 * 1024 * 1024 * 1024
-        toPetabyte: () => round(value.div(BIT_TO_PETABYTE), decimalPlaces), // 8 * 1000 * 1000 * 1000 * 1000 * 1000
-        toPebibyte: () => round(value.div(BIT_TO_PEBIBYTE), decimalPlaces), // 8 * 1024 * 1024 * 1024 * 1024 * 1024
-        toExabyte: () => round(value.div(BIT_TO_EXABYTE), decimalPlaces), // 8 * 1000 * 1000 * 1000 * 1000 * 1000 * 1000
-        toExbibyte: () => round(value.div(BIT_TO_EXBIBYTE), decimalPlaces) // 8 * 1024 * 1024 * 1024 * 1024 * 1024 * 1024
+        toBit: (): number => roundBig(value),
+        toNibble: (): number => roundBig(value.div(BIT_TO_NIBBLE)), // 4
+        toByte: (): number => roundBig(value.div(BIT_TO_BYTE)), // 8
+        toKilobyte: (): number => roundBig(value.div(BIT_TO_KILOBYTE)), // 8 * 1000
+        toKibibyte: () => roundBig(value.div(BIT_TO_KIBIBYTE)), // 8 * 1024
+        toMegabyte: () => roundBig(value.div(BIT_TO_MEGABYTE)), // 8 * 1000 * 1000
+        toMebibyte: () => roundBig(value.div(BIT_TO_MEBIBYTE)), // 8 * 1024 * 1024
+        toGigabyte: () => roundBig(value.div(BIT_TO_GIGABYTE)), // 8 * 1000 * 1000 * 1000
+        toGibibyte: () => roundBig(value.div(BIT_TO_GIBIBYTE)), // 8 * 1024 * 1024 * 1024
+        toTerabyte: () => roundBig(value.div(BIT_TO_TERABYTE)), // 8 * 1000 * 1000 * 1000 * 1000
+        toTebibyte: () => roundBig(value.div(BIT_TO_TEBIBYTE)), // 8 * 1024 * 1024 * 1024 * 1024
+        toPetabyte: () => roundBig(value.div(BIT_TO_PETABYTE)), // 8 * 1000 * 1000 * 1000 * 1000 * 1000
+        toPebibyte: () => roundBig(value.div(BIT_TO_PEBIBYTE)), // 8 * 1024 * 1024 * 1024 * 1024 * 1024
+        toExabyte: () => roundBig(value.div(BIT_TO_EXABYTE)), // 8 * 1000 * 1000 * 1000 * 1000 * 1000 * 1000
+        toExbibyte: () => roundBig(value.div(BIT_TO_EXBIBYTE)) // 8 * 1024 * 1024 * 1024 * 1024 * 1024 * 1024
     };
 };
 

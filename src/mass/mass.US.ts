@@ -1,5 +1,5 @@
-import SI, { toSI } from './mass.SI';
-import UK, { toUK } from './mass.UK';
+import { toMetric } from './mass.metric';
+import { toUK } from './mass.UK';
 
 const SI_RATIOS: { [key: string]: number } = { //to the gram
     pound: 453.592,
@@ -17,7 +17,7 @@ export const toUS = (value: number) => {
         toGrain: (): number => value / SI_RATIOS.grain,
         toHundredweight: (): number => value / SI_RATIOS.hundredweight,
 
-        toSI: () => toSI(value),
+        toMetric: () => toMetric(value),
         toUK: () => toUK(value),
     };
 };

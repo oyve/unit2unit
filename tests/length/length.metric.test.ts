@@ -1,18 +1,18 @@
-import SI from '../../src/length/length.metric';
+import Metric from '../../src/length/length.metric';
 
 describe('SI Length Conversions', () => {
     test('test', () => {
-        const meter = SI.meter(1000);
+        const meter = Metric.meter(1000);
         expect(meter.toKilometer()).toBe(1);
     });
 
     test('UK', () => {
-        const meter = SI.meter(1000);
+        const meter = Metric.meter(1000);
         expect(meter.toUK().toFeet()).toBe(3280.839895013123);
     });
 
     test('UK2', () => {
-        const km = SI.kilometer(2);
+        const km = Metric.kilometer(2);
         expect(km.toUK().ft()).toBe(6561.679790026246);
     });
 });

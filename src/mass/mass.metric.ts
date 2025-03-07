@@ -1,5 +1,5 @@
-import UK, { toUK } from './mass.UK';
-import US, { toUS } from './mass.US';
+import { toUK } from './mass.UK';
+import { toUS } from './mass.US';
 
 const SI_RATIOS: { [key: string]: number } = { // to the gram
     gram: 1,
@@ -15,7 +15,7 @@ const SI_RATIOS: { [key: string]: number } = { // to the gram
     megagram: 1000000
 };
 
-export const toSI = (value: number) => {
+export const toMetric = (value: number) => {
     return {
         toGram: (): number => value,
         toKilogram: (): number => value / SI_RATIOS.kilogram,

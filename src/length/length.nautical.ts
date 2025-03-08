@@ -34,7 +34,7 @@ export const toNautical = (value: number) => {
 		nlg: function() { return this.toNauticalLeague(); },
 		nmi: function() { return this.toNauticalMile(); },
 
-		toMetric: () => toMetric(value),
+		toMetric: () => toMetric(new Big(value)),
 		toUK: () => toUK(value),
 		toUS: () => toUS(value),
 		toAstronomical: () => toAstronomical(new Big(value)),

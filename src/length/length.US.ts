@@ -32,7 +32,7 @@ export const toUS = (value: number) => {
         ch: function(): number { return this.toChain(); },
         fur: function(): number { return this.toFurlong(); },
 
-        toMetric: () => toMetric(value),
+        toMetric: () => toMetric(new Big(value)),
         toUK: () => toUK(value),
         toNautical: () => toNautical(value),
         toSpecial: () => toSpecial(value),

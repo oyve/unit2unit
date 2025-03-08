@@ -34,7 +34,7 @@ export const toSpecial = (value: number) => {
         b: function() { return this.toBohr(); },
         c: function() { return this.toCubit(); },
 
-        toMetric: () => toMetric(value),
+        toMetric: () => toMetric(new Big(value)),
         toUK: () => toUK(value),
         toUS: () => toUS(value),
         toNautical: () => toNautical(value),

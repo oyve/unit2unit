@@ -31,7 +31,7 @@ export const toUK = (value: number) => {
 		yd: function(): number { return this.toYard(); },
 		ch: function(): number { return this.toChain(); },
 
-		toMetric: () => toMetric(value),
+		toMetric: () => toMetric(new Big(value)),
 		toUS: () => toUS(value),
 		toNautical: () => toNautical(value),
 		toSpecial: () => toSpecial(value),

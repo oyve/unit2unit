@@ -47,7 +47,7 @@ export const toAstronomical = (value: Big) => {
         ld: function(): number { return this.toLightDay(); },
         lw: function(): number { return this.toLightWeek(); },
 
-        toMetric: () => toMetric(value.toNumber()),
+        toMetric: () => toMetric(new Big(value)),
         toUK: () => toUK(value.toNumber()),
         toUS: () => toUS(value.toNumber()),
         toNautical: () => toNautical(value.toNumber()),

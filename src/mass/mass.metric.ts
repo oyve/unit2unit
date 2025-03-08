@@ -14,7 +14,8 @@ const METRIC_RATIOS: { [key: string]: number } = { //to the gram
     picogram: 0.000000000001,
     decagram: 10,
     centigram: 0.01,
-    megagram: 1000000
+    megagram: 1000000,
+    decigram: 0.1
 };
 
 export const toMetric = (value: Big) => {
@@ -30,10 +31,28 @@ export const toMetric = (value: Big) => {
         toDecagram: (decimalPlaces?: number): number => roundBig(value.div(METRIC_RATIOS.decagram), decimalPlaces),
         toCentigram: (decimalPlaces?: number): number => roundBig(value.div(METRIC_RATIOS.centigram), decimalPlaces),
         toMegagram: (decimalPlaces?: number): number => roundBig(value.div(METRIC_RATIOS.megagram), decimalPlaces),
+        toDecigram: (decimalPlaces?: number): number => roundBig(value.div(METRIC_RATIOS.decigram), decimalPlaces),
 
-        toUK: () => toUK(value),
-        toUS: () => toUS(value),
+        mg: function(decimalPlaces?: number) { return this.toMilligram(decimalPlaces); },
+        g: function(decimalPlaces?: number) { return this.toGram(decimalPlaces); },
+        kg: function(decimalPlaces?: number) { return this.toKilogram(decimalPlaces); },
+        hg: function(decimalPlaces?: number) { return this.toHektogram(decimalPlaces); },
+        ct: function(decimalPlaces?: number) { return this.toCarat(decimalPlaces); },
+        µg: function(decimalPlaces?: number) { return this.toMicrogram(decimalPlaces); },
+        ng: function(decimalPlaces?: number) { return this.toNanogram(decimalPlaces); },
+        pg: function(decimalPlaces?: number) { return this.toPicogram(decimalPlaces); },
+        dag: function(decimalPlaces?: number) { return this.toDecagram(decimalPlaces); },
+        cg: function(decimalPlaces?: number) { return this.toCentigram(decimalPlaces); },
+        Mg: function(decimalPlaces?: number) { return this.toMegagram(decimalPlaces); },
+        dg: function(decimalPlaces?: number) { return this.toDecigram(decimalPlaces); },
+
+        toUK: () => toUK(gramToGrain(value)),
+        toUS: () => toUS(gramToGrain(value)),
     };
+};
+
+const gramToGrain = (gram: Big) => {
+    return gram.times(15.43235835294143);
 };
 
 export default {
@@ -48,6 +67,7 @@ export default {
     decagram: (value: number) => toMetric(new Big(value).times(METRIC_RATIOS.decagram)),
     centigram: (value: number) => toMetric(new Big(value).times(METRIC_RATIOS.centigram)),
     megagram: (value: number) => toMetric(new Big(value).times(METRIC_RATIOS.megagram)),
+    decigram: (value: number) => toMetric(new Big(value).times(METRIC_RATIOS.decigram)),
 
     mg: function(value: number) { return this.milligram(value); },
     g: function(value: number) { return this.gram(value); },
@@ -59,5 +79,6 @@ export default {
     pg: function(value: number) { return this.picogram(value); },
     dag: function(value: number) { return this.decagram(value); },
     cg: function(value: number) { return this.centigram(value); },
-    Mg: function(value: number) { return this.megagram(value); }
+    Mg: function(value: number) { return this.megagram(value); },
+    dg: function(value: number) { return this.decigram(value); }
 };

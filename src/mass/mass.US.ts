@@ -3,14 +3,14 @@ import { toMetric } from './mass.metric';
 import { toUK } from './mass.UK';
 import { roundBig } from '../common';
 
-const US_RATIOS: { [key: string]: number } = { //to the gram
-    pound: 453.592,
-    ounce: 28.3495,
-    stone: 6350.29,
-    grain: 0.0647989,
-    hundredweight: 45359.2,
-    dram: 1.77185,
-    quarter: 11339.8,
+const US_RATIOS: { [key: string]: number } = { //to the grain
+    pound: 7000,
+    ounce: 437.5,
+    stone: 98000,
+    grain: 1,
+    hundredweight: 700000,
+    dram: 27.34375,
+    quarter: 175000,
 };
 
 export const toUS = (value: Big) => {
@@ -31,9 +31,13 @@ export const toUS = (value: Big) => {
         dr: function(decimalPlaces?: number) { return this.toDram(decimalPlaces); },
         qtr: function(decimalPlaces?: number) { return this.toQuarter(decimalPlaces); },
 
-        toMetric: () => toMetric(value),
-        toUK: () => toUK(value),
+        toMetric: () => toMetric(grainToGram(value)),
+        toUK: () => toUK(value), //grain is equal
     };
+};
+
+const grainToGram = (grain: Big) => {
+    return grain.times(0.06479891);
 };
 
 export default {

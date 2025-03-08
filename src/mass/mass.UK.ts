@@ -3,16 +3,16 @@ import { toMetric } from './mass.metric';
 import { toUS } from './mass.US';
 import { roundBig } from '../common';
 
-const UK_RATIOS: { [key: string]: number } = { //to the gram
-    stone: 6350.29,
-    hundredweight: 50802.34544,
-    quarter: 12700.58636,
-    ton: 1016046.9088,
-    pound: 453.592,
-    ounce: 28.3495,
-    grain: 0.0647989,
-    dram: 1.7718451953125,
-    scruple: 1.2959782,
+const UK_RATIOS: { [key: string]: number } = { //to the grain
+    grain: 1,
+    scruple: 20,
+    dram: 27.34375,
+    ounce: 437.5,
+    pound: 7000,
+    stone: 98000,
+    quarter: 196000,
+    hundredweight: 784000,
+    ton: 15680000,
 };
 
 export const toUK = (value: Big) => {
@@ -37,9 +37,13 @@ export const toUK = (value: Big) => {
         dr: function(decimalPlaces?: number) { return this.toDram(decimalPlaces); },
         sc: function(decimalPlaces?: number) { return this.toScruple(decimalPlaces); },
 
-        toMetric: () => toMetric(value),
+        toMetric: () => toMetric(grainToGram(value)),
         toUS: () => toUS(value),
     };
+};
+
+const grainToGram = (grain: Big) => {
+    return grain.times(0.06479891);
 };
 
 export default {

@@ -3,7 +3,7 @@ import { toUK } from './mass.UK';
 import { toUS } from './mass.US';
 import { roundBig } from '../common';
 
-const METRIC_RATIOS: { [key: string]: number } = {
+const METRIC_RATIOS: { [key: string]: number } = { //to the gram
     gram: 1,
     hektogram: 100,
     milligram: 0.001,

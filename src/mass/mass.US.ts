@@ -3,7 +3,7 @@ import { toMetric } from './mass.metric';
 import { toUK } from './mass.UK';
 import { roundBig } from '../common';
 
-const US_RATIOS: { [key: string]: number } = {
+const US_RATIOS: { [key: string]: number } = { //to the gram
     pound: 453.592,
     ounce: 28.3495,
     stone: 6350.29,

@@ -25,12 +25,12 @@ export const toUK = (value: Big) => {
 		toYard: (decimalPlaces?: number): number => roundBig(value.div(UK_RATIOS.yard), decimalPlaces),
 		toChain: (decimalPlaces?: number): number => roundBig(value.div(UK_RATIOS.chain), decimalPlaces),
 
-		ft: function(): number { return this.toFoot(); },
-		ftm: function(): number { return this.toFathom(); },
-		mi: function(): number { return this.toMile(); },
-		in: function(): number { return this.toInch(); },
-		yd: function(): number { return this.toYard(); },
-		ch: function(): number { return this.toChain(); },
+		ft: function(decimalPlaces?: number): number { return this.toFoot(decimalPlaces); },
+		ftm: function(decimalPlaces?: number): number { return this.toFathom(decimalPlaces); },
+		mi: function(decimalPlaces?: number): number { return this.toMile(decimalPlaces); },
+		in: function(decimalPlaces?: number): number { return this.toInch(decimalPlaces); },
+		yd: function(decimalPlaces?: number): number { return this.toYard(decimalPlaces); },
+		ch: function(decimalPlaces?: number): number { return this.toChain(decimalPlaces); },
 
 		toMetric: () => toMetric(value),
 		toUS: () => toUS(value),

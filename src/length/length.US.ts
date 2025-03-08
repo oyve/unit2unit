@@ -24,14 +24,14 @@ export const toUS = (value: Big) => {
         toChain: (decimalPlaces?: number): number => toUK(value).toChain(decimalPlaces), //same as UK
         toFurlong: (decimalPlaces?: number): number => roundBig(value.div(US_RATIOS.furlong), decimalPlaces),
 
-        in: function(): number { return this.toInch(); },
-        ft: function(): number { return this.toFoot(); },
-        yd: function(): number { return this.toYard(); },
-        mi: function(): number { return this.toMile(); },
-        cb: function(): number { return this.toCableLength(); },
-        rd: function(): number { return this.toRod(); },
-        ch: function(): number { return this.toChain(); },
-        fur: function(): number { return this.toFurlong(); },
+        in: function(decimalPlaces?: number): number { return this.toInch(decimalPlaces); },
+        ft: function(decimalPlaces?: number): number { return this.toFoot(decimalPlaces); },
+        yd: function(decimalPlaces?: number): number { return this.toYard(decimalPlaces); },
+        mi: function(decimalPlaces?: number): number { return this.toMile(decimalPlaces); },
+        cb: function(decimalPlaces?: number): number { return this.toCableLength(decimalPlaces); },
+        rd: function(decimalPlaces?: number): number { return this.toRod(decimalPlaces); },
+        ch: function(decimalPlaces?: number): number { return this.toChain(decimalPlaces); },
+        fur: function(decimalPlaces?: number): number { return this.toFurlong(decimalPlaces); },
 
         toMetric: () => toMetric(value),
         toUK: () => toUK(value),

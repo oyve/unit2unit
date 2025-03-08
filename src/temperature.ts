@@ -2,8 +2,7 @@
 import { round } from "./common";
 
 const to = (kelvin: number) => { //kelvin
-    
-    let tos = {
+    return {
         toKelvin: (decimalPlaces?: number): number => round(kelvin, decimalPlaces) || 0,
         toCelsius: (decimalPlaces?: number): number => round(kelvin - 273.15, decimalPlaces) || 0,
         toFahrenheit: (decimalPlaces?: number): number => round((kelvin * 9/5) - 459.67, decimalPlaces) || 0,
@@ -13,16 +12,15 @@ const to = (kelvin: number) => { //kelvin
         toRéaumur: (decimalPlaces?: number): number => round((kelvin - 273.15) * 4/5, decimalPlaces) || 0,
         toRømer: (decimalPlaces?: number): number => round((kelvin - 273.15) * 21/40 + 7.5, decimalPlaces) || 0,
 
-        toK: (decimalPlaces?: number): number => tos.toKelvin(decimalPlaces),
-        toC: (decimalPlaces?: number): number => tos.toCelsius(decimalPlaces),
-        toF: (decimalPlaces?: number): number => tos.toFahrenheit(decimalPlaces),
-        toDe: (decimalPlaces?: number): number => tos.toDelisle(decimalPlaces),
-        toN: (decimalPlaces?: number): number => tos.toNewton(decimalPlaces),
-        toR: (decimalPlaces?: number): number => tos.toRankine(decimalPlaces),
-        toRé: (decimalPlaces?: number): number => tos.toRéaumur(decimalPlaces),
-        toRø: (decimalPlaces?: number): number => tos.toRømer(decimalPlaces)
+        toK: function(decimalPlaces?: number): number { return this.toKelvin(decimalPlaces); },
+        toC: function(decimalPlaces?: number): number { return this.toCelsius(decimalPlaces); },
+        toF: function(decimalPlaces?: number): number { return this.toFahrenheit(decimalPlaces); },
+        toDe: function(decimalPlaces?: number): number { return this.toDelisle(decimalPlaces); },
+        toN: function(decimalPlaces?: number): number { return this.toNewton(decimalPlaces); },
+        toR: function(decimalPlaces?: number): number { return this.toRankine(decimalPlaces); },
+        toRé: function(decimalPlaces?: number): number { return this.toRéaumur(decimalPlaces); },
+        toRø: function(decimalPlaces?: number): number { return this.toRømer(decimalPlaces); }
     }
-    return tos;
 }
 
 export default {

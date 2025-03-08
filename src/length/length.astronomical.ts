@@ -5,37 +5,36 @@ import { toUS } from './length.US';
 import { toNautical } from './length.nautical';
 import { toSpecial } from './length.special';
 import { toMetric } from './length.metric';
+import { roundBig } from '../common';
 
 // Set the decimal places to a higher value
 Big.DP = 40;
 
-const ASTRONOMICAL_RATIOS: { [key: string]: number } = { //to the meter
-	astronomicUnit: 149597870700,
-	lightyear: 9.4607e+15,
-	megaparsec: 3.08567758e22,
-	parsec: 3.085677581e16,
-	lightsecond: 299792458,
-	lightminute: 17987547480,
-	lighthour: 1079252848800,
-	lightday: 2.59020683712e13,
-	lightweek: 1.813144785784e14
+const ASTRONOMICAL_RATIOS: { [key: string]: number } = { // to the au
+    astronomicUnit: 1,
+    lightyear: 63241.077,
+    megaparsec: 206264806.247,
+    parsec: 206264.806,
+    lightsecond: 4.84814e-6,
+    lightminute: 2.90888e-4,
+    lighthour: 0.0174533,
+    lightday: 0.418879,
+    lightweek: 2.93224,
+    bohr: 5.29177e-11
 };
 
-const round = (value: Big, decimalPlaces: number = 40) => {
-    return parseFloat(value.toFixed(decimalPlaces));
-}
-
 export const toAstronomical = (value: Big) => {
-	return {
-        toAstronomicUnit: (decimalPlaces?: number): number => round(value.div(ASTRONOMICAL_RATIOS.astronomicUnit), decimalPlaces),
-        toLightYear: (decimalPlaces?: number): number => round(value.div(ASTRONOMICAL_RATIOS.lightyear), decimalPlaces),
-        toMegaparsec: (decimalPlaces?: number): number => round(value.div(ASTRONOMICAL_RATIOS.megaparsec), decimalPlaces),
-        toParsec: (decimalPlaces?: number): number => round(value.div(ASTRONOMICAL_RATIOS.parsec), decimalPlaces),
-        toLightSecond: (decimalPlaces?: number): number => round(value.div(ASTRONOMICAL_RATIOS.lightsecond), decimalPlaces),
-        toLightMinute: (decimalPlaces?: number): number => round(value.div(ASTRONOMICAL_RATIOS.lightminute), decimalPlaces),
-        toLightHour: (decimalPlaces?: number): number => round(value.div(ASTRONOMICAL_RATIOS.lighthour), decimalPlaces),
-        toLightDay: (decimalPlaces?: number): number => round(value.div(ASTRONOMICAL_RATIOS.lightday), decimalPlaces),
-        toLightWeek: (decimalPlaces?: number): number => round(value.div(ASTRONOMICAL_RATIOS.lightweek), decimalPlaces),
+    return {
+        toAstronomicUnit: (decimalPlaces?: number): number => roundBig(value.div(ASTRONOMICAL_RATIOS.astronomicUnit), decimalPlaces),
+        toLightYear: (decimalPlaces?: number): number => roundBig(value.div(ASTRONOMICAL_RATIOS.lightyear), decimalPlaces),
+        toMegaparsec: (decimalPlaces?: number): number => roundBig(value.div(ASTRONOMICAL_RATIOS.megaparsec), decimalPlaces),
+        toParsec: (decimalPlaces?: number): number => roundBig(value.div(ASTRONOMICAL_RATIOS.parsec), decimalPlaces),
+        toLightSecond: (decimalPlaces?: number): number => roundBig(value.div(ASTRONOMICAL_RATIOS.lightsecond), decimalPlaces),
+        toLightMinute: (decimalPlaces?: number): number => roundBig(value.div(ASTRONOMICAL_RATIOS.lightminute), decimalPlaces),
+        toLightHour: (decimalPlaces?: number): number => roundBig(value.div(ASTRONOMICAL_RATIOS.lighthour), decimalPlaces),
+        toLightDay: (decimalPlaces?: number): number => roundBig(value.div(ASTRONOMICAL_RATIOS.lightday), decimalPlaces),
+        toLightWeek: (decimalPlaces?: number): number => roundBig(value.div(ASTRONOMICAL_RATIOS.lightweek), decimalPlaces),
+        toBohr: (decimalPlaces?: number): number => roundBig(value.div(ASTRONOMICAL_RATIOS.bohr), decimalPlaces), // Added Bohr conversion
 
         au: function(decimalPlaces?: number): number { return this.toAstronomicUnit(decimalPlaces); },
         ly: function(decimalPlaces?: number): number { return this.toLightYear(decimalPlaces); },
@@ -46,6 +45,7 @@ export const toAstronomical = (value: Big) => {
         lh: function(decimalPlaces?: number): number { return this.toLightHour(decimalPlaces); },
         ld: function(decimalPlaces?: number): number { return this.toLightDay(decimalPlaces); },
         lw: function(decimalPlaces?: number): number { return this.toLightWeek(decimalPlaces); },
+        b: function(decimalPlaces?: number): number { return this.toBohr(decimalPlaces); }, // Added Bohr shorthand
 
         toMetric: () => toMetric(value),
         toUK: () => toUK(value),
@@ -65,6 +65,7 @@ export default {
     lighthour: (value: number) => toAstronomical(new Big(value * ASTRONOMICAL_RATIOS.lighthour)),
     lightday: (value: number) => toAstronomical(new Big(value * ASTRONOMICAL_RATIOS.lightday)),
     lightweek: (value: number) => toAstronomical(new Big(value * ASTRONOMICAL_RATIOS.lightweek)),
+    bohr: (value: number) => toAstronomical(new Big(value * ASTRONOMICAL_RATIOS.bohr)), // Added Bohr
 
     au: function(value: number) { return this.astronomicUnit(value); },
     ly: function(value: number) { return this.lightyear(value); },
@@ -74,5 +75,6 @@ export default {
     lm: function(value: number) { return this.lightminute(value); },
     lh: function(value: number) { return this.lighthour(value); },
     ld: function(value: number) { return this.lightday(value); },
-    lw: function(value: number) { return this.lightweek(value); }
-}
+    lw: function(value: number) { return this.lightweek(value); },
+    b: function(value: number) { return this.bohr(value); } // Added Bohr shorthand
+};

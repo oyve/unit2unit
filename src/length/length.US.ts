@@ -33,13 +33,17 @@ export const toUS = (value: Big) => {
         ch: function(decimalPlaces?: number): number { return this.toChain(decimalPlaces); },
         fur: function(decimalPlaces?: number): number { return this.toFurlong(decimalPlaces); },
 
-        toMetric: () => toMetric(value),
+        toMetric: () => toMetric(footToMeter(value)),
         toUK: () => toUK(value),
-        toNautical: () => toNautical(value),
+        toNautical: () => toNautical(footToNauticalMile(value)),
         toSpecial: () => toSpecial(value),
-        toAstronomical: () => toAstronomical(value),
+        toAstronomical: () => toAstronomical(footToAstronomicalUnit(value)),
     }
 }
+
+const footToMeter = (foot: Big) => { return foot.times(0.06479891); };
+const footToNauticalMile = (foot: Big) => { return foot.times(0.000164578834); };
+const footToAstronomicalUnit = (foot: Big) => { return foot.times(4.84814e-12); };
 
 export default {
     inch: (value: number) => toUS(new Big(value).times(UK_RATIOS.inch)), //same as UK

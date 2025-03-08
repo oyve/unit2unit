@@ -8,6 +8,7 @@ import { toAstronomical } from './length.astronomical';
 import { roundBig } from '../common';
 
 const METRIC_RATIOS: { [key: string]: number } = {
+    attometer: 10 ** -18,
     femtometer: 10 ** -15,
     picometer: 10 ** -12,
     nanometer: 10 ** -9,
@@ -27,6 +28,7 @@ const METRIC_RATIOS: { [key: string]: number } = {
 
 export const toMetric = (value: Big) => {
     return {
+        toAttometer: (decimalPlaces?: number): number => roundBig(value.div(METRIC_RATIOS.attometer), decimalPlaces), // Added attometer conversion
         toFemtometer: (decimalPlaces?: number): number => roundBig(value.div(METRIC_RATIOS.femtometer), decimalPlaces),
         toPicometer: (decimalPlaces?: number): number => roundBig(value.div(METRIC_RATIOS.picometer), decimalPlaces),
         toNanometer: (decimalPlaces?: number): number => roundBig(value.div(METRIC_RATIOS.nanometer), decimalPlaces),
@@ -44,6 +46,7 @@ export const toMetric = (value: Big) => {
         toPetameter: (decimalPlaces?: number): number => roundBig(value.div(METRIC_RATIOS.petameter), decimalPlaces),
         toExameter: (decimalPlaces?: number): number => roundBig(value.div(METRIC_RATIOS.exameter), decimalPlaces),
 
+        am: function(decimalPlaces?: number) { return this.toAttometer(decimalPlaces); }, // Added attometer shorthand
         fm: function(decimalPlaces?: number) { return this.toFemtometer(decimalPlaces); },
         pm: function(decimalPlaces?: number) { return this.toPicometer(decimalPlaces); },
         nm: function(decimalPlaces?: number) { return this.toNanometer(decimalPlaces); },
@@ -61,15 +64,20 @@ export const toMetric = (value: Big) => {
         Pm: function(decimalPlaces?: number) { return this.toPetameter(decimalPlaces); },
         Em: function(decimalPlaces?: number) { return this.toExameter(decimalPlaces); },
 
-        toUK: () => toUK(value),
-        toUS: () => toUS(value),
-        toNautical: () => toNautical(value),
+        toUK: () => toUK(meterToFoot(value)),
+        toUS: () => toUS(meterToFoot(value)),
+        toNautical: () => toNautical(meterToNauticalMile(value)),
         toSpecial: () => toSpecial(value),
-        toAstronomical: () => toAstronomical(value),
+        toAstronomical: () => toAstronomical(meterToAstronomicalUnit(value)),
     };
 };
 
+const meterToNauticalMile = (meter: Big) => { return meter.times(1 / 1852); };
+const meterToFoot = (meter: Big) => { return meter.times(3.28084); };
+const meterToAstronomicalUnit = (meter: Big) => { return meter.times(6.68459e-12); };
+
 export default {
+    attometer: (value: number) => toMetric(new Big(value).times(METRIC_RATIOS.attometer)), // Added attometer
     femtometer: (value: number) => toMetric(new Big(value).times(METRIC_RATIOS.femtometer)),
     picometer: (value: number) => toMetric(new Big(value).times(METRIC_RATIOS.picometer)),
     nanometer: (value: number) => toMetric(new Big(value).times(METRIC_RATIOS.nanometer)),
@@ -87,6 +95,7 @@ export default {
     petameter: (value: number) => toMetric(new Big(value).times(METRIC_RATIOS.petameter)),
     exameter: (value: number) => toMetric(new Big(value).times(METRIC_RATIOS.exameter)),
 
+    am: function(value: number) { return this.attometer(value); },
     fm: function(value: number) { return this.femtometer(value); },
     pm: function(value: number) { return this.picometer(value); },
     nm: function(value: number) { return this.nanometer(value); },

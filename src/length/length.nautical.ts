@@ -7,57 +7,50 @@ import { toSpecial } from './length.special';
 import { toMetric } from './length.metric';
 import { roundBig } from '../common';
 
-const NAUTICAL_RATIOS: { [key: string]: number } = { //to the meter
-	foot: 0.3048, //equals UK foot
-	mile: 1852,
-	cableLength: 185.3184,
-	fathom: 1.8, //equals UK fathom
-	league: 5556,
-	nauticalLeague: 5556,
-	nauticalMile: 1852
+const NAUTICAL_RATIOS: { [key: string]: number } = { //to the nautical mile
+    foot: 1 / 6076.12,
+    cableLength: 1 / 10,
+    fathom: 1 / 1013.333,
+    league: 3,
+    nauticalMile: 1
 };
 
 export const toNautical = (value: Big) => {
-	return {
-		toFoot: (decimalPlaces?: number) => roundBig(value.times(NAUTICAL_RATIOS.foot), decimalPlaces),
-		toMile: (decimalPlaces?: number) => roundBig(value.times(NAUTICAL_RATIOS.mile), decimalPlaces),
-		toCableLength: (decimalPlaces?: number) => roundBig(value.times(NAUTICAL_RATIOS.cableLength), decimalPlaces),
-		toFathom: (decimalPlaces?: number) => roundBig(value.div(NAUTICAL_RATIOS.fathom), decimalPlaces),
-		toLeague: (decimalPlaces?: number) => roundBig(value.times(NAUTICAL_RATIOS.league), decimalPlaces),
-		toNauticalLeague: (decimalPlaces?: number) => roundBig(value.times(NAUTICAL_RATIOS.nauticalLeague), decimalPlaces),
-		toNauticalMile: (decimalPlaces?: number) => roundBig(value.times(NAUTICAL_RATIOS.nauticalMile), decimalPlaces),
+    return {
+        toFoot: (decimalPlaces?: number) => roundBig(value.div(NAUTICAL_RATIOS.foot), decimalPlaces),
+        toCableLength: (decimalPlaces?: number) => roundBig(value.div(NAUTICAL_RATIOS.cableLength), decimalPlaces),
+        toFathom: (decimalPlaces?: number) => roundBig(value.div(NAUTICAL_RATIOS.fathom), decimalPlaces),
+        toLeague: (decimalPlaces?: number) => roundBig(value.div(NAUTICAL_RATIOS.league), decimalPlaces),
+        toNauticalMile: (decimalPlaces?: number) => roundBig(value.div(NAUTICAL_RATIOS.nauticalMile), decimalPlaces),
 
-		ft: function(decimalPlaces?: number) { return this.toFoot(decimalPlaces); },
-		mi: function(decimalPlaces?: number) { return this.toMile(decimalPlaces); },
-		cb: function(decimalPlaces?: number) { return this.toCableLength(decimalPlaces); },
-		ftm: function(decimalPlaces?: number) { return this.toFathom(decimalPlaces); },
-		lg: function(decimalPlaces?: number) { return this.toLeague(decimalPlaces); },
-		nlg: function(decimalPlaces?: number) { return this.toNauticalLeague(decimalPlaces); },
-		nmi: function(decimalPlaces?: number) { return this.toNauticalMile(decimalPlaces); },
+        ft: function(decimalPlaces?: number) { return this.toFoot(decimalPlaces); },
+        cb: function(decimalPlaces?: number) { return this.toCableLength(decimalPlaces); },
+        ftm: function(decimalPlaces?: number) { return this.toFathom(decimalPlaces); },
+        lg: function(decimalPlaces?: number) { return this.toLeague(decimalPlaces); },
+        nmi: function(decimalPlaces?: number) { return this.toNauticalMile(decimalPlaces); },
 
-		toMetric: () => toMetric(value),
-		toUK: () => toUK(value),
-		toUS: () => toUS(value),
-		toAstronomical: () => toAstronomical(value),
-		toSpecial: () => toSpecial(value),
-	};
+        toMetric: () => toMetric(nauticalMileToMetric(value)),
+        toUK: () => toUK(nauticalMileToFoot(value)),
+        toUS: () => toUS(nauticalMileToFoot(value)),
+        toAstronomical: () => toAstronomical(nauticalMileToAstronomical(value)),
+        toSpecial: () => toSpecial(value),
+    };
 };
 
+const nauticalMileToMetric = (mile: Big) => { return mile.times(1852); };
+const nauticalMileToFoot = (mile: Big) => { return mile.times(6076.12); };
+const nauticalMileToAstronomical = (mile: Big) => { return mile.times(1.5077945e-13); };
 
 export default {
-	foot: (value: number) => toNautical(new Big(value).times(NAUTICAL_RATIOS.foot)),
-	mile: (value: number) => toNautical(new Big(value).times(NAUTICAL_RATIOS.mile)),
-	cableLength: (value: number) => toNautical(new Big(value).div(NAUTICAL_RATIOS.cableLength)),
-	fathom: (value: number) => toNautical(new Big(value).times(NAUTICAL_RATIOS.fathom)),
-	league: (value: number) => toNautical(new Big(value).times(NAUTICAL_RATIOS.league)),
-	nauticalLeague: (value: number) => toNautical(new Big(value).times(NAUTICAL_RATIOS.nauticalLeague)),
-	nauticalMile: (value: number) => toNautical(new Big(value).times(NAUTICAL_RATIOS.nauticalMile)),
+    foot: (value: number) => toNautical(new Big(value).times(NAUTICAL_RATIOS.foot)),
+    cableLength: (value: number) => toNautical(new Big(value).times(NAUTICAL_RATIOS.cableLength)),
+    fathom: (value: number) => toNautical(new Big(value).times(NAUTICAL_RATIOS.fathom)),
+    league: (value: number) => toNautical(new Big(value).times(NAUTICAL_RATIOS.league)),
+    nauticalMile: (value: number) => toNautical(new Big(value).times(NAUTICAL_RATIOS.nauticalMile)),
 
     ft: function(value: number) { return this.foot(value); },
-	mi: function(value: number) { return this.mile(value); },
-	cb: function(value: number) { return this.cableLength(value); },
-	ftm: function(value: number) { return this.fathom(value); },
-	lg: function(value: number) { return this.league(value); },
-	nlg: function(value: number) { return this.nauticalLeague(value); },
-	nmi: function(value: number) { return this.nauticalMile(value); },
+    cb: function(value: number) { return this.cableLength(value); },
+    ftm: function(value: number) { return this.fathom(value); },
+    lg: function(value: number) { return this.league(value); },
+    nmi: function(value: number) { return this.nauticalMile(value); },
 };

@@ -3,6 +3,7 @@ import Metric from '../../src/length/length.metric';
 describe('Metric Length Conversions', () => {
     test('test', () => {
         const meter = Metric.meter(1000);
+        expect(meter.toAttometer()).toBe(1e21);
         expect(meter.toFemtometer()).toBe(1e18);
         expect(meter.toPicometer()).toBe(1e15);
         expect(meter.toNanometer()).toBe(1e12);
@@ -18,6 +19,13 @@ describe('Metric Length Conversions', () => {
         expect(meter.toTerameter()).toBe(0.000000001);
         expect(meter.toPetameter()).toBe(0.000000000001);
         expect(meter.toExameter()).toBe(0.000000000000001);
+    });
+});
+
+describe('Attometer Length Conversions', () => {
+    test('test', () => {
+        const meter = Metric.attometer(1e21);
+        expect(meter.toMeter(0)).toBe(1000);
     });
 });
 

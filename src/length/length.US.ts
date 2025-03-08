@@ -5,6 +5,7 @@ import UK, { toUK, UK_RATIOS } from './length.UK';
 import { toNautical } from './length.nautical';
 import { toSpecial } from './length.special';
 import { toAstronomical } from "./length.astronomical";
+import { roundBig } from '../common';
 
 const US_RATIOS: { [key: string]: number } = { //to the meter
 	cableLength: 219.456,
@@ -12,16 +13,16 @@ const US_RATIOS: { [key: string]: number } = { //to the meter
 	furlong: 201.168
 };
 
-export const toUS = (value: number) => {
+export const toUS = (value: Big) => {
     return {
-        toInch: (): number => toUK(value).toInch(), //same as UK
-        toFoot: (): number => toUK(value).toFoot(), //same as UK
-        toYard: (): number => toUK(value).toYard(), //same as UK
-        toMile: (): number => toUK(value).toMile(), //same as UK
-        toCableLength: (): number => (value / US_RATIOS.cableLength),
-        toRod: (): number => (value / US_RATIOS.rod),
-        toChain: (): number => toUK(value).toChain(), //same as UK
-        toFurlong: (): number => (value / US_RATIOS.furlong),
+        toInch: (decimalPlaces?: number): number => toUK(value).toInch(decimalPlaces), //same as UK
+        toFoot: (decimalPlaces?: number): number => toUK(value).toFoot(decimalPlaces), //same as UK
+        toYard: (decimalPlaces?: number): number => toUK(value).toYard(decimalPlaces), //same as UK
+        toMile: (decimalPlaces?: number): number => toUK(value).toMile(decimalPlaces), //same as UK
+        toCableLength: (decimalPlaces?: number): number => roundBig(value.div(US_RATIOS.cableLength), decimalPlaces),
+        toRod: (decimalPlaces?: number): number => roundBig(value.div(US_RATIOS.rod), decimalPlaces),
+        toChain: (decimalPlaces?: number): number => toUK(value).toChain(decimalPlaces), //same as UK
+        toFurlong: (decimalPlaces?: number): number => roundBig(value.div(US_RATIOS.furlong), decimalPlaces),
 
         in: function(): number { return this.toInch(); },
         ft: function(): number { return this.toFoot(); },
@@ -32,23 +33,23 @@ export const toUS = (value: number) => {
         ch: function(): number { return this.toChain(); },
         fur: function(): number { return this.toFurlong(); },
 
-        toMetric: () => toMetric(new Big(value)),
+        toMetric: () => toMetric(value),
         toUK: () => toUK(value),
         toNautical: () => toNautical(value),
         toSpecial: () => toSpecial(value),
-        toAstronomical: () => toAstronomical(new Big(value)),
+        toAstronomical: () => toAstronomical(value),
     }
 }
 
 export default {
-    inch: (value: number) => toUS(value * UK_RATIOS.inch), //same as UK
-    foot: (value: number) => toUS(value * UK_RATIOS.foot), //same as UK
-    yard: (value: number) => toUS(value * UK_RATIOS.yard), //same as UK
-    mile: (value: number) => toUS(value * UK_RATIOS.mile), //same as UK
-    cableLength: (value: number) => toUS(value / US_RATIOS.cableLength),
-    rod: (value: number) => toUS(value * US_RATIOS.rod),
-    chain: (value: number) => toUS(value * UK_RATIOS.chain), //same as UK
-    furlong: (value: number) => toUS(value * US_RATIOS.furlong),
+    inch: (value: number) => toUS(new Big(value).times(UK_RATIOS.inch)), //same as UK
+    foot: (value: number) => toUS(new Big(value).times(UK_RATIOS.foot)), //same as UK
+    yard: (value: number) => toUS(new Big(value).times(UK_RATIOS.yard)), //same as UK
+    mile: (value: number) => toUS(new Big(value).times(UK_RATIOS.mile)), //same as UK
+    cableLength: (value: number) => toUS(new Big(value).div(US_RATIOS.cableLength)),
+    rod: (value: number) => toUS(new Big(value).times(US_RATIOS.rod)),
+    chain: (value: number) => toUS(new Big(value).times(UK_RATIOS.chain)), //same as UK
+    furlong: (value: number) => toUS(new Big(value).times(US_RATIOS.furlong)),
 
     in: function(value: number) { return this.inch(value); },
     ft: function(value: number) { return this.foot(value); },

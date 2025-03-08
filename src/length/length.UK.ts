@@ -5,6 +5,7 @@ import { toUS } from './length.US';
 import { toNautical } from './length.nautical';
 import { toSpecial } from './length.special';
 import { toAstronomical } from './length.astronomical';
+import { roundBig } from '../common';
 
 export const UK_RATIOS = { //to the meter
 	foot: 0.3048,
@@ -15,14 +16,14 @@ export const UK_RATIOS = { //to the meter
 	chain: 20.1168
 }
 
-export const toUK = (value: number) => {
+export const toUK = (value: Big) => {
 	return {
-		toInch: (): number => (value / UK_RATIOS.inch),
-		toFoot: (): number => (value / UK_RATIOS.foot),
-		toMile: (): number => (value / UK_RATIOS.mile),
-		toFathom: (): number => (value / UK_RATIOS.fathom),
-		toYard: (): number => (value / UK_RATIOS.yard),
-		toChain: (): number => (value / UK_RATIOS.chain),
+		toInch: (decimalPlaces?: number): number => roundBig(value.div(UK_RATIOS.inch), decimalPlaces),
+		toFoot: (decimalPlaces?: number): number => roundBig(value.div(UK_RATIOS.foot), decimalPlaces),
+		toMile: (decimalPlaces?: number): number => roundBig(value.div(UK_RATIOS.mile), decimalPlaces),
+		toFathom: (decimalPlaces?: number): number => roundBig(value.div(UK_RATIOS.fathom), decimalPlaces),
+		toYard: (decimalPlaces?: number): number => roundBig(value.div(UK_RATIOS.yard), decimalPlaces),
+		toChain: (decimalPlaces?: number): number => roundBig(value.div(UK_RATIOS.chain), decimalPlaces),
 
 		ft: function(): number { return this.toFoot(); },
 		ftm: function(): number { return this.toFathom(); },
@@ -31,21 +32,21 @@ export const toUK = (value: number) => {
 		yd: function(): number { return this.toYard(); },
 		ch: function(): number { return this.toChain(); },
 
-		toMetric: () => toMetric(new Big(value)),
+		toMetric: () => toMetric(value),
 		toUS: () => toUS(value),
 		toNautical: () => toNautical(value),
 		toSpecial: () => toSpecial(value),
-		toAstronomical: () => toAstronomical(new Big(value)),
+		toAstronomical: () => toAstronomical(value),
 	};
 };
 
 export default {
-	feet: (value: number) => to(value * UK_RATIOS.foot),
-	mile: (value: number) => to(value * UK_RATIOS.mile),
-	fathom: (value: number) => to(value * UK_RATIOS.fathom),
-	inch: (value: number) => to(value * UK_RATIOS.inch),
-	yard: (value: number) => to(value * UK_RATIOS.yard),
-	chain: (value: number) => to(value * UK_RATIOS.chain),
+	feet: (value: number) => toUK(new Big(value).times(UK_RATIOS.foot)),
+	mile: (value: number) => toUK(new Big(value).times(UK_RATIOS.mile)),
+	fathom: (value: number) => toUK(new Big(value).times(UK_RATIOS.fathom)),
+	inch: (value: number) => toUK(new Big(value).times(UK_RATIOS.inch)),
+	yard: (value: number) => toUK(new Big(value).times(UK_RATIOS.yard)),
+	chain: (value: number) => toUK(new Big(value).times(UK_RATIOS.chain)),
 
 	ft: function(value: number) { return this.feet(value); },
 	mi: function(value: number) { return this.mile(value); },

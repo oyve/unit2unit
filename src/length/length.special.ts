@@ -5,6 +5,7 @@ import { toUK } from './length.UK';
 import { toUS } from './length.US';
 import { toNautical } from './length.nautical';
 import { toAstronomical } from "./length.astronomical";
+import { roundBig } from '../common';
 
 const SPECIAL_RATIOS: { [key: string]: number } = { //to the meter
     hectometer: 10 ** 2,
@@ -16,40 +17,40 @@ const SPECIAL_RATIOS: { [key: string]: number } = { //to the meter
     cubit: 0.4572,
 };
 
-export const toSpecial = (value: number) => {
+export const toSpecial = (value: Big) => {
     return {
-        toHectometer: () => value / SPECIAL_RATIOS.hectometer,
-        toScandinavianMile: () => value / SPECIAL_RATIOS.scandinavianMile,
-        toAttometre: () => value / SPECIAL_RATIOS.attometre,
-        toÅngström: () => value / SPECIAL_RATIOS.ångström,
-        toBarleycorn: () => value / SPECIAL_RATIOS.barleycorn,
-        toBohr: () => value / SPECIAL_RATIOS.bohr,
-        toCubit: () => value / SPECIAL_RATIOS.cubit,
+        toHectometer: (decimalPlaces?: number) => roundBig(value.div(SPECIAL_RATIOS.hectometer), decimalPlaces),
+        toScandinavianMile: (decimalPlaces?: number) => roundBig(value.div(SPECIAL_RATIOS.scandinavianMile), decimalPlaces),
+        toAttometre: (decimalPlaces?: number) => roundBig(value.div(SPECIAL_RATIOS.attometre), decimalPlaces),
+        toÅngström: (decimalPlaces?: number) => roundBig(value.div(SPECIAL_RATIOS.ångström), decimalPlaces),
+        toBarleycorn: (decimalPlaces?: number) => roundBig(value.div(SPECIAL_RATIOS.barleycorn), decimalPlaces),
+        toBohr: (decimalPlaces?: number) => roundBig(value.div(SPECIAL_RATIOS.bohr), decimalPlaces),
+        toCubit: (decimalPlaces?: number) => roundBig(value.div(SPECIAL_RATIOS.cubit), decimalPlaces),
 
-        hm: function() { return this.toHectometer(); },
-        mil: function() { return this.toScandinavianMile(); },
-        am: function() { return this.toAttometre(); },
-        Å: function() { return this.toÅngström(); },
-        bc: function() { return this.toBarleycorn(); },
-        b: function() { return this.toBohr(); },
-        c: function() { return this.toCubit(); },
+        hm: function(decimalPlaces?: number) { return this.toHectometer(decimalPlaces); },
+        mil: function(decimalPlaces?: number) { return this.toScandinavianMile(decimalPlaces); },
+        am: function(decimalPlaces?: number) { return this.toAttometre(decimalPlaces); },
+        Å: function(decimalPlaces?: number) { return this.toÅngström(decimalPlaces); },
+        bc: function(decimalPlaces?: number) { return this.toBarleycorn(decimalPlaces); },
+        b: function(decimalPlaces?: number) { return this.toBohr(decimalPlaces); },
+        c: function(decimalPlaces?: number) { return this.toCubit(decimalPlaces); },
 
-        toMetric: () => toMetric(new Big(value)),
+        toMetric: () => toMetric(value),
         toUK: () => toUK(value),
         toUS: () => toUS(value),
         toNautical: () => toNautical(value),
-        toAstronomical: () => toAstronomical(new Big(value)),
+        toAstronomical: () => toAstronomical(value),
     };
 };
 
 export default {
-    hectometer: (value: number) => toSpecial(value * SPECIAL_RATIOS.hectometer),
-    scandinavianMile: (value: number) => toSpecial(value * SPECIAL_RATIOS.scandinavianMile),
-    attometre: (value: number) => toSpecial(value * SPECIAL_RATIOS.attometre),
-    ångström: (value: number) => toSpecial(value * SPECIAL_RATIOS.ångström),
-    barleycorn: (value: number) => toSpecial(value * SPECIAL_RATIOS.barleycorn),
-    bohr: (value: number) => toSpecial(value * SPECIAL_RATIOS.bohr),
-    cubit: (value: number) => toSpecial(value * SPECIAL_RATIOS.cubit),
+    hectometer: (value: number) => toSpecial(new Big(value).times(SPECIAL_RATIOS.hectometer)),
+    scandinavianMile: (value: number) => toSpecial(new Big(value).times(SPECIAL_RATIOS.scandinavianMile)),
+    attometre: (value: number) => toSpecial(new Big(value).times(SPECIAL_RATIOS.attometre)),
+    ångström: (value: number) => toSpecial(new Big(value).times(SPECIAL_RATIOS.ångström)),
+    barleycorn: (value: number) => toSpecial(new Big(value).times(SPECIAL_RATIOS.barleycorn)),
+    bohr: (value: number) => toSpecial(new Big(value).times(SPECIAL_RATIOS.bohr)),
+    cubit: (value: number) => toSpecial(new Big(value).times(SPECIAL_RATIOS.cubit)),
 
     hm: function(value: number) { return this.hectometer(value); },
     mil: function(value: number) { return this.scandinavianMile(value); },

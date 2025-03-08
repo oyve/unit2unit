@@ -6,8 +6,8 @@ import { toNautical } from './length.nautical';
 import { toSpecial } from './length.special';
 import { toAstronomical } from './length.astronomical';
 
-const UK_RATIOS = { //to the meter
-	feet: 0.3048,
+export const UK_RATIOS = { //to the meter
+	foot: 0.3048,
 	mile: 1609.344,
 	fathom: 1.8,
 	inch: 0.0254,
@@ -17,14 +17,14 @@ const UK_RATIOS = { //to the meter
 
 export const toUK = (value: number) => {
 	return {
-		toFeet: (): number => (value / UK_RATIOS.feet),
-		toFathom: (): number => (value / UK_RATIOS.fathom),
-		toMile: (): number => (value / UK_RATIOS.mile),
 		toInch: (): number => (value / UK_RATIOS.inch),
+		toFoot: (): number => (value / UK_RATIOS.foot),
+		toMile: (): number => (value / UK_RATIOS.mile),
+		toFathom: (): number => (value / UK_RATIOS.fathom),
 		toYard: (): number => (value / UK_RATIOS.yard),
 		toChain: (): number => (value / UK_RATIOS.chain),
 
-		ft: function(): number { return this.toFeet(); },
+		ft: function(): number { return this.toFoot(); },
 		ftm: function(): number { return this.toFathom(); },
 		mi: function(): number { return this.toMile(); },
 		in: function(): number { return this.toInch(); },
@@ -40,7 +40,7 @@ export const toUK = (value: number) => {
 };
 
 export default {
-	feet: (value: number) => to(value * UK_RATIOS.feet),
+	feet: (value: number) => to(value * UK_RATIOS.foot),
 	mile: (value: number) => to(value * UK_RATIOS.mile),
 	fathom: (value: number) => to(value * UK_RATIOS.fathom),
 	inch: (value: number) => to(value * UK_RATIOS.inch),

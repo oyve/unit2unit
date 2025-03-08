@@ -1,31 +1,26 @@
 import Big from 'big.js';
 
 import { toMetric } from './length.metric'
-import { toUK } from './length.UK';
+import UK, { toUK, UK_RATIOS } from './length.UK';
 import { toNautical } from './length.nautical';
 import { toSpecial } from './length.special';
 import { toAstronomical } from "./length.astronomical";
 
 const US_RATIOS: { [key: string]: number } = { //to the meter
-	inch: 0.00254,
-	foot: 0.3048,
-	yard: 0.9144,
-	mile: 1609.344,
 	cableLength: 219.456,
 	rod: 5.0292,
-	chain: 20.1168,
 	furlong: 201.168
 };
 
 export const toUS = (value: number) => {
     return {
-        toInch: (): number => (value / US_RATIOS.inch),
-        toFoot: (): number => (value / US_RATIOS.foot),
-        toYard: (): number => (value / US_RATIOS.yard),
-        toMile: (): number => (value / US_RATIOS.mile),
+        toInch: (): number => toUK(value).toInch(), //same as UK
+        toFoot: (): number => toUK(value).toFoot(), //same as UK
+        toYard: (): number => toUK(value).toYard(), //same as UK
+        toMile: (): number => toUK(value).toMile(), //same as UK
         toCableLength: (): number => (value / US_RATIOS.cableLength),
         toRod: (): number => (value / US_RATIOS.rod),
-        toChain: (): number => (value / US_RATIOS.chain),
+        toChain: (): number => toUK(value).toChain(), //same as UK
         toFurlong: (): number => (value / US_RATIOS.furlong),
 
         in: function(): number { return this.toInch(); },
@@ -46,13 +41,13 @@ export const toUS = (value: number) => {
 }
 
 export default {
-    inch: (value: number) => toUS(value * US_RATIOS.inch),
-    foot: (value: number) => toUS(value * US_RATIOS.foot),
-    yard: (value: number) => toUS(value * US_RATIOS.yard),
-    mile: (value: number) => toUS(value * US_RATIOS.mile),
+    inch: (value: number) => toUS(value * UK_RATIOS.inch), //same as UK
+    foot: (value: number) => toUS(value * UK_RATIOS.foot), //same as UK
+    yard: (value: number) => toUS(value * UK_RATIOS.yard), //same as UK
+    mile: (value: number) => toUS(value * UK_RATIOS.mile), //same as UK
     cableLength: (value: number) => toUS(value / US_RATIOS.cableLength),
     rod: (value: number) => toUS(value * US_RATIOS.rod),
-    chain: (value: number) => toUS(value * US_RATIOS.chain),
+    chain: (value: number) => toUS(value * UK_RATIOS.chain), //same as UK
     furlong: (value: number) => toUS(value * US_RATIOS.furlong),
 
     in: function(value: number) { return this.inch(value); },

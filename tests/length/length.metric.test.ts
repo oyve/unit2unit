@@ -8,7 +8,7 @@ describe('SI Length Conversions', () => {
 
     test('UK', () => {
         const meter = Metric.meter(1000);
-        expect(meter.toUK().toFeet()).toBe(3280.839895013123);
+        expect(meter.toUK().toFoot()).toBe(3280.839895013123);
     });
 
     test('UK2', () => {

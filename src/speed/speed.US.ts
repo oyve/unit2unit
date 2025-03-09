@@ -16,7 +16,7 @@ const SPEED_RATIOS: { [key: string]: number } = { // to the foot per second
 };
 
 const to = (value: number) => {
-    let tos = {
+    return {
         toFootPerHour: (decimalPlaces?: number) => round(value / SPEED_RATIOS.footPerHour, decimalPlaces),
         toFootPerMinute: (decimalPlaces?: number) => round(value / SPEED_RATIOS.footPerMinute, decimalPlaces),
         toFootPerSecond: (decimalPlaces?: number) => round(value / SPEED_RATIOS.footPerSecond, decimalPlaces),
@@ -38,9 +38,8 @@ const to = (value: number) => {
         mi_min: function (decimalPlaces?: number) { return this.toMilePerMinute(decimalPlaces); },
         mi_s: function (decimalPlaces?: number) { return this.toMilePerSecond(decimalPlaces); },
         kn: function (decimalPlaces?: number) { return this.toKnot(decimalPlaces); },
-    }
-    return tos;
-}
+    };
+};
 
 export default {
     footPerHour: (value: number) => to(value * SPEED_RATIOS.footPerHour),

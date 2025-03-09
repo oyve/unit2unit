@@ -8,15 +8,14 @@ const SPEED_RATIOS: { [key: string]: number } = { // to the knot
 };
 
 const to = (value: number) => {
-    let tos = {
+    return {
         toKnot: (decimalPlaces?: number) => round(value / SPEED_RATIOS.knot, decimalPlaces),
         toKnotAdmiralty: (decimalPlaces?: number) => round(value / SPEED_RATIOS.knotAdmiralty, decimalPlaces),
 
         kn: function (decimalPlaces?: number) { return this.toKnot(decimalPlaces); },
         kn_adm: function (decimalPlaces?: number) { return this.toKnotAdmiralty(decimalPlaces); },
-    }
-    return tos;
-}
+    };
+};
 
 export default {
     knot: (value: number) => to(value * SPEED_RATIOS.knot),
@@ -24,4 +23,4 @@ export default {
 
     kn: function (value: number) { return this.knot(value); },
     kn_adm: function (value: number) { return this.knotAdmiralty(value); },
-}
+};

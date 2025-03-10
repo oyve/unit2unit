@@ -1,25 +1,26 @@
 'use strict'
-import { round } from "./common";
+import Big from "big.js";
+import { convertTo, round } from "./common";
 
-const to = (kelvin: number) => { //kelvin
+const to = (kelvin: number | Big) => { //kelvin
     return {
-        toKelvin: (decimalPlaces?: number): number => round(kelvin, decimalPlaces) || 0,
-        toCelsius: (decimalPlaces?: number): number => round(kelvin - 273.15, decimalPlaces) || 0,
-        toFahrenheit: (decimalPlaces?: number): number => round((kelvin * 9/5) - 459.67, decimalPlaces) || 0,
-        toDelisle: (decimalPlaces?: number): number => round((373.15 - kelvin) * 3/2, decimalPlaces) || 0,
-        toNewton: (decimalPlaces?: number): number => round((kelvin - 273.15) * 33/100, decimalPlaces) || 0,
-        toRankine: (decimalPlaces?: number): number => round(kelvin * 9/5, decimalPlaces) || 0,
-        toRéaumur: (decimalPlaces?: number): number => round((kelvin - 273.15) * 4/5, decimalPlaces) || 0,
-        toRømer: (decimalPlaces?: number): number => round((kelvin - 273.15) * 21/40 + 7.5, decimalPlaces) || 0,
+        toKelvin: (decimalPlaces?: number): number | Big => round(kelvin, decimalPlaces) || 0,
+        toCelsius: (decimalPlaces?: number): number | Big => round(new Big(kelvin).minus(273.15), decimalPlaces) || 0,
+        toFahrenheit: (decimalPlaces?: number): number | Big => round(new Big(kelvin).times(9/5).minus(459.67), decimalPlaces) || 0,
+        toDelisle: (decimalPlaces?: number): number | Big => round(new Big(373.15).minus(kelvin).times(3/2), decimalPlaces) || 0,
+        toNewton: (decimalPlaces?: number): number | Big => round(new Big(kelvin).minus(273.15).times(33/100), decimalPlaces) || 0,
+        toRankine: (decimalPlaces?: number): number | Big => round(new Big(kelvin).times(9/5), decimalPlaces) || 0,
+        toRéaumur: (decimalPlaces?: number): number | Big => round(new Big(kelvin).minus(273.15).times(4/5), decimalPlaces) || 0,
+        toRømer: (decimalPlaces?: number): number | Big => round(new Big(kelvin).minus(273.15).times(21/40).plus(7.5), decimalPlaces) || 0,
 
-        toK: function(decimalPlaces?: number): number { return this.toKelvin(decimalPlaces); },
-        toC: function(decimalPlaces?: number): number { return this.toCelsius(decimalPlaces); },
-        toF: function(decimalPlaces?: number): number { return this.toFahrenheit(decimalPlaces); },
-        toDe: function(decimalPlaces?: number): number { return this.toDelisle(decimalPlaces); },
-        toN: function(decimalPlaces?: number): number { return this.toNewton(decimalPlaces); },
-        toR: function(decimalPlaces?: number): number { return this.toRankine(decimalPlaces); },
-        toRé: function(decimalPlaces?: number): number { return this.toRéaumur(decimalPlaces); },
-        toRø: function(decimalPlaces?: number): number { return this.toRømer(decimalPlaces); }
+        toK: function(decimalPlaces?: number): number | Big { return this.toKelvin(decimalPlaces); },
+        toC: function(decimalPlaces?: number): number | Big  { return this.toCelsius(decimalPlaces); },
+        toF: function(decimalPlaces?: number): number | Big  { return this.toFahrenheit(decimalPlaces); },
+        toDe: function(decimalPlaces?: number): number | Big  { return this.toDelisle(decimalPlaces); },
+        toN: function(decimalPlaces?: number): number | Big  { return this.toNewton(decimalPlaces); },
+        toR: function(decimalPlaces?: number): number | Big  { return this.toRankine(decimalPlaces); },
+        toRé: function(decimalPlaces?: number): number | Big  { return this.toRéaumur(decimalPlaces); },
+        toRø: function(decimalPlaces?: number): number | Big  { return this.toRømer(decimalPlaces); }
     }
 }
 

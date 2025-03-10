@@ -1,8 +1,9 @@
+import Big from 'big.js';
 import Nautical from '../../src/length/length.nautical';
 
 describe('Nautical Length Conversions', () => {
     test('Mile to all', () => {
-        const mile = Nautical.nauticalMile(1000);
+        const mile = Nautical.nauticalMile(new Big(1000));
         expect(mile.toFoot()).toBe(6076120);
         expect(mile.toCableLength()).toBe(10000);
         expect(mile.toFathom()).toBe(1013333);

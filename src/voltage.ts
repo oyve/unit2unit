@@ -1,5 +1,8 @@
 'use strict';
 
+import Big from "big.js";
+import { convertFrom, convertTo } from "./common";
+
 const VOLT_RATIOS: Record<string, number> = {
     volt: 1,
     microVolt: 1e-6,
@@ -8,20 +11,20 @@ const VOLT_RATIOS: Record<string, number> = {
     megaVolt: 1e6
 };
 
-const to = (value: number) => {
+const to = (value: number | Big) => {
     return {
-        toVolt: (): number => value,
-        toMicroVolt: (): number => value * VOLT_RATIOS.microVolt,
-        toMilliVolt: (): number => value * VOLT_RATIOS.milliVolt,
-        toKiloVolt: (): number => value * VOLT_RATIOS.kiloVolt,
-        toMegaVolt: (): number => value * VOLT_RATIOS.megaVolt
+        toVolt: (): number | Big => value,
+        toMicroVolt: (): number | Big => convertTo(value, VOLT_RATIOS.microVolt),
+        toMilliVolt: (): number | Big => convertTo(value, VOLT_RATIOS.milliVolt),
+        toKiloVolt: (): number | Big => convertTo(value, VOLT_RATIOS.kiloVolt),
+        toMegaVolt: (): number | Big => convertTo(value, VOLT_RATIOS.megaVolt),
     };
 };
 
-export const convert = {
-    volt: (value: number) => to(value),
-    microVolt: (value: number) => to(value / VOLT_RATIOS.microVolt),
-    milliVolt: (value: number) => to(value / VOLT_RATIOS.milliVolt),
-    kiloVolt: (value: number) => to(value / VOLT_RATIOS.kiloVolt),
-    megaVolt: (value: number) => to(value / VOLT_RATIOS.megaVolt)
+export default {
+    volt: (value: number | Big) => to(value),
+    microVolt: (value: number | Big) => to(convertFrom(value, VOLT_RATIOS.microVolt)),
+    milliVolt: (value: number | Big) => to(convertFrom(value, VOLT_RATIOS.milliVolt)),
+    kiloVolt: (value: number | Big) => to(convertFrom(value, VOLT_RATIOS.kiloVolt)),
+    megaVolt: (value: number | Big) => to(convertFrom(value, VOLT_RATIOS.megaVolt))
 };

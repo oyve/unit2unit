@@ -1,5 +1,5 @@
 import Big from 'big.js';
-import { round, roundBig } from '../src/common';
+import { round } from '../src/common';
 
 describe('round function', () => {
     it('should not be rounded by decimalPlaces not set', () => {
@@ -17,14 +17,14 @@ describe('roundBig function', () => {
     it('should round to Big.DP decimal places when Big.DP is set', () => {
         Big.DP = 5;
         const value = new Big(1.12345678901234567890);
-        const result = roundBig(value);
+        const result = round(value);
         expect(result).toBe(1.12346);
     });
 
     it('should round to specified decimal places when Big.DP is set to 10', () => {
         Big.DP = 10;
         const value = new Big(1.12345678901234567890);
-        const result = roundBig(value);
+        const result = round(value);
         expect(result).toBe(1.1234567890);
     });
 });

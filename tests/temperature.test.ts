@@ -3,13 +3,13 @@ import temperature from '../src/temperature';
 describe('Temperature Conversion', () => {
     test('Kelvin to all', () => {
         const kelvin = temperature.kelvin(350);
-        expect(kelvin.toCelsius()).toBe(76.85000000000002);
-        expect(kelvin.toFahrenheit()).toBe(170.32999999999998);
-        expect(kelvin.toDelisle()).toBe(34.724999999999966);
-        expect(kelvin.toNewton()).toBe(25.360500000000005);
+        expect(kelvin.toCelsius()).toBe(76.85);
+        expect(kelvin.toFahrenheit()).toBe(170.33);
+        expect(kelvin.toDelisle()).toBe(34.725);
+        expect(kelvin.toNewton()).toBe(25.3605);
         expect(kelvin.toRankine()).toBe(630);
-        expect(kelvin.toRéaumur()).toBe(61.48000000000002);
-        expect(kelvin.toRømer()).toBe(47.84625000000001);
+        expect(kelvin.toRéaumur()).toBe(61.48);
+        expect(kelvin.toRømer()).toBe(47.84625);
     });
 
     test('Celcius to Kelvin', () => {

@@ -5,7 +5,7 @@ import { toUK } from './length.UK';
 import { toUS } from './length.US';
 import { toNautical } from './length.nautical';
 import { toAstronomical } from "./length.astronomical";
-import { roundBig } from '../common';
+import { round, convertTo, convertFrom } from '../common';
 
 const SPECIAL_RATIOS: { [key: string]: number } = { //to the meter
     scandinavianMile: 10 ** 4,
@@ -13,11 +13,11 @@ const SPECIAL_RATIOS: { [key: string]: number } = { //to the meter
     cubit: 0.4572,
 };
 
-export const toSpecial = (value: Big) => {
+export const toSpecial = (value: number | Big) => {
     return {
-        toScandinavianMile: (decimalPlaces?: number) => roundBig(value.div(SPECIAL_RATIOS.scandinavianMile), decimalPlaces),
-        toBarleycorn: (decimalPlaces?: number) => roundBig(value.div(SPECIAL_RATIOS.barleycorn), decimalPlaces),
-        toCubit: (decimalPlaces?: number) => roundBig(value.div(SPECIAL_RATIOS.cubit), decimalPlaces),
+        toScandinavianMile: (decimalPlaces?: number) => round(convertTo(value, SPECIAL_RATIOS.scandinavianMile), decimalPlaces),
+        toBarleycorn: (decimalPlaces?: number) => round(convertTo(value, SPECIAL_RATIOS.barleycorn), decimalPlaces),
+        toCubit: (decimalPlaces?: number) => round(convertTo(value, SPECIAL_RATIOS.cubit), decimalPlaces),
 
         mil: function(decimalPlaces?: number) { return this.toScandinavianMile(decimalPlaces); },
         bc: function(decimalPlaces?: number) { return this.toBarleycorn(decimalPlaces); },
@@ -32,11 +32,11 @@ export const toSpecial = (value: Big) => {
 };
 
 export default {
-    scandinavianMile: (value: number) => toSpecial(new Big(value).times(SPECIAL_RATIOS.scandinavianMile)),
-    barleycorn: (value: number) => toSpecial(new Big(value).times(SPECIAL_RATIOS.barleycorn)),
-    cubit: (value: number) => toSpecial(new Big(value).times(SPECIAL_RATIOS.cubit)),
+    scandinavianMile: (value: number | Big) => toSpecial(convertFrom(value, SPECIAL_RATIOS.scandinavianMile)),
+    barleycorn: (value: number | Big) => toSpecial(convertFrom(value, SPECIAL_RATIOS.barleycorn)),
+    cubit: (value: number | Big) => toSpecial(convertFrom(value, SPECIAL_RATIOS.cubit)),
 
-    mil: function(value: number) { return this.scandinavianMile(value); },
-    bc: function(value: number) { return this.barleycorn(value); },
-    c: function(value: number) { return this.cubit(value); },
+    mil: function(value: number | Big) { return this.scandinavianMile(value); },
+    bc: function(value: number | Big) { return this.barleycorn(value); },
+    c: function(value: number | Big) { return this.cubit(value); },
 };

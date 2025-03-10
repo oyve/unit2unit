@@ -1,7 +1,7 @@
 import Big from 'big.js';
 import { toUK } from './mass.UK';
 import { toUS } from './mass.US';
-import { roundBig } from '../common';
+import { round, convertFrom, convertTo } from '../common';
 
 const METRIC_RATIOS: { [key: string]: number } = { //to the gram
     gram: 1,
@@ -18,20 +18,20 @@ const METRIC_RATIOS: { [key: string]: number } = { //to the gram
     decigram: 0.1
 };
 
-export const toMetric = (value: Big) => {
+export const toMetric = (value: number | Big) => {
     return {
-        toGram: (decimalPlaces?: number): number => roundBig(value, decimalPlaces),
-        toKilogram: (decimalPlaces?: number): number => roundBig(value.div(METRIC_RATIOS.kilogram), decimalPlaces),
-        toHektogram: (decimalPlaces?: number): number => roundBig(value.div(METRIC_RATIOS.hektogram), decimalPlaces),
-        toMilligram: (decimalPlaces?: number): number => roundBig(value.div(METRIC_RATIOS.milligram), decimalPlaces),
-        toCarat: (decimalPlaces?: number): number => roundBig(value.div(METRIC_RATIOS.carat), decimalPlaces),
-        toMicrogram: (decimalPlaces?: number): number => roundBig(value.div(METRIC_RATIOS.microgram), decimalPlaces),
-        toNanogram: (decimalPlaces?: number): number => roundBig(value.div(METRIC_RATIOS.nanogram), decimalPlaces),
-        toPicogram: (decimalPlaces?: number): number => roundBig(value.div(METRIC_RATIOS.picogram), decimalPlaces),
-        toDecagram: (decimalPlaces?: number): number => roundBig(value.div(METRIC_RATIOS.decagram), decimalPlaces),
-        toCentigram: (decimalPlaces?: number): number => roundBig(value.div(METRIC_RATIOS.centigram), decimalPlaces),
-        toMegagram: (decimalPlaces?: number): number => roundBig(value.div(METRIC_RATIOS.megagram), decimalPlaces),
-        toDecigram: (decimalPlaces?: number): number => roundBig(value.div(METRIC_RATIOS.decigram), decimalPlaces),
+        toGram: (decimalPlaces?: number): number | Big => value,
+        toKilogram: (decimalPlaces?: number): number | Big => round(convertTo(value, METRIC_RATIOS.kilogram), decimalPlaces),
+        toHektogram: (decimalPlaces?: number): number | Big => round(convertTo(value, METRIC_RATIOS.hektogram), decimalPlaces),
+        toMilligram: (decimalPlaces?: number): number | Big => round(convertTo(value, METRIC_RATIOS.milligram), decimalPlaces),
+        toCarat: (decimalPlaces?: number): number | Big => round(convertTo(value, METRIC_RATIOS.carat), decimalPlaces),
+        toMicrogram: (decimalPlaces?: number): number | Big => round(convertTo(value, METRIC_RATIOS.microgram), decimalPlaces),
+        toNanogram: (decimalPlaces?: number): number | Big => round(convertTo(value, METRIC_RATIOS.nanogram), decimalPlaces),
+        toPicogram: (decimalPlaces?: number): number | Big => round(convertTo(value, METRIC_RATIOS.picogram), decimalPlaces),
+        toDecagram: (decimalPlaces?: number): number | Big => round(convertTo(value, METRIC_RATIOS.decagram), decimalPlaces),
+        toCentigram: (decimalPlaces?: number): number | Big => round(convertTo(value, METRIC_RATIOS.centigram), decimalPlaces),
+        toMegagram: (decimalPlaces?: number): number | Big => round(convertTo(value, METRIC_RATIOS.megagram), decimalPlaces),
+        toDecigram: (decimalPlaces?: number): number | Big => round(convertTo(value, METRIC_RATIOS.decigram), decimalPlaces),
 
         mg: function(decimalPlaces?: number) { return this.toMilligram(decimalPlaces); },
         g: function(decimalPlaces?: number) { return this.toGram(decimalPlaces); },
@@ -51,23 +51,23 @@ export const toMetric = (value: Big) => {
     };
 };
 
-const gramToGrain = (gram: Big) => {
-    return gram.times(15.43235835294143);
+const gramToGrain = (gram: number | Big) => {
+    return convertFrom(gram, 15.43235835294143);
 };
 
 export default {
-    milligram: (value: number) => toMetric(new Big(value).times(METRIC_RATIOS.milligram)),
-    gram: (value: number) => toMetric(new Big(value)),
-    kilogram: (value: number) => toMetric(new Big(value).times(METRIC_RATIOS.kilogram)),
-    hektogram: (value: number) => toMetric(new Big(value).times(METRIC_RATIOS.hektogram)),
-    carat: (value: number) => toMetric(new Big(value).times(METRIC_RATIOS.carat)),
-    microgram: (value: number) => toMetric(new Big(value).times(METRIC_RATIOS.microgram)),
-    nanogram: (value: number) => toMetric(new Big(value).times(METRIC_RATIOS.nanogram)),
-    picogram: (value: number) => toMetric(new Big(value).times(METRIC_RATIOS.picogram)),
-    decagram: (value: number) => toMetric(new Big(value).times(METRIC_RATIOS.decagram)),
-    centigram: (value: number) => toMetric(new Big(value).times(METRIC_RATIOS.centigram)),
-    megagram: (value: number) => toMetric(new Big(value).times(METRIC_RATIOS.megagram)),
-    decigram: (value: number) => toMetric(new Big(value).times(METRIC_RATIOS.decigram)),
+    milligram: (value: number | Big) => toMetric(convertFrom(value, METRIC_RATIOS.milligram)),
+    gram: (value: number | Big) => toMetric(value),    
+    kilogram: (value: number | Big) => toMetric(convertFrom(value, METRIC_RATIOS.kilogram)),
+    hektogram: (value: number | Big) => toMetric(convertFrom(value, METRIC_RATIOS.hektogram)),
+    carat: (value: number | Big) => toMetric(convertFrom(value, METRIC_RATIOS.carat)),
+    microgram: (value: number | Big) => toMetric(convertFrom(value, METRIC_RATIOS.microgram)),
+    nanogram: (value: number | Big) => toMetric(convertFrom(value, METRIC_RATIOS.nanogram)),
+    picogram: (value: number | Big) => toMetric(convertFrom(value, METRIC_RATIOS.picogram)),
+    decagram: (value: number | Big) => toMetric(convertFrom(value, METRIC_RATIOS.decagram)),
+    centigram: (value: number | Big) => toMetric(convertFrom(value, METRIC_RATIOS.centigram)),
+    megagram: (value: number | Big) => toMetric(convertFrom(value, METRIC_RATIOS.megagram)),
+    decigram: (value: number | Big) => toMetric(convertFrom(value, METRIC_RATIOS.decigram)),
 
     mg: function(value: number) { return this.milligram(value); },
     g: function(value: number) { return this.gram(value); },

@@ -6,7 +6,7 @@ import { toNautical } from './length.nautical';
 import { toSpecial } from './length.special';
 import { toMetric } from './length.metric';
 import { toAstronomical } from './length.astronomical';
-import { roundBig } from '../common';
+import { convertTo, round } from '../common';
 
 // Set the decimal places to a higher value
 Big.DP = 40;
@@ -20,21 +20,21 @@ const ATOMIC_RATIOS: { [key: string]: number } = { // to the Bohr radius
     comptonWavelength: 2.42631e-12 // Added Compton wavelength
 };
 
-export const toAtomic = (value: Big) => {
+export const toAtomic = (value: number | Big) => {
     return {
-        toPlanckLength: (decimalPlaces?: number): number => roundBig(value.div(ATOMIC_RATIOS.planckLength), decimalPlaces),
-        toFermi: (decimalPlaces?: number): number => roundBig(value.div(ATOMIC_RATIOS.fermi), decimalPlaces),
-        toBohrRadius: (decimalPlaces?: number): number => roundBig(value.div(ATOMIC_RATIOS.bohrRadius), decimalPlaces),
-        toAngstrom: (decimalPlaces?: number): number => roundBig(value.div(ATOMIC_RATIOS.angstrom), decimalPlaces), // Added angstrom conversion
-        toElectronRadius: (decimalPlaces?: number): number => roundBig(value.div(ATOMIC_RATIOS.electronRadius), decimalPlaces), // Added classical electron radius conversion
-        toComptonWavelength: (decimalPlaces?: number): number => roundBig(value.div(ATOMIC_RATIOS.comptonWavelength), decimalPlaces), // Added Compton wavelength conversion
+        toPlanckLength: (decimalPlaces?: number): number | Big => round(convertTo(value, ATOMIC_RATIOS.planckLength), decimalPlaces),
+        toFermi: (decimalPlaces?: number): number | Big => round(convertTo(value, ATOMIC_RATIOS.fermi), decimalPlaces),
+        toBohrRadius: (decimalPlaces?: number): number | Big => round(convertTo(value, ATOMIC_RATIOS.bohrRadius), decimalPlaces),
+        toAngstrom: (decimalPlaces?: number): number | Big => round(convertTo(value, ATOMIC_RATIOS.angstrom), decimalPlaces), // Added angstrom conversion
+        toElectronRadius: (decimalPlaces?: number): number | Big => round(convertTo(value, ATOMIC_RATIOS.electronRadius), decimalPlaces), // Added classical electron radius conversion
+        toComptonWavelength: (decimalPlaces?: number): number | Big => round(convertTo(value, ATOMIC_RATIOS.comptonWavelength), decimalPlaces), // Added Compton wavelength conversion
 
-        pl: function(decimalPlaces?: number): number { return this.toPlanckLength(decimalPlaces); },
-        fm: function(decimalPlaces?: number): number { return this.toFermi(decimalPlaces); },
-        br: function(decimalPlaces?: number): number { return this.toBohrRadius(decimalPlaces); },
-        Å: function(decimalPlaces?: number): number { return this.toAngstrom(decimalPlaces); }, // Added angstrom shorthand
-        er: function(decimalPlaces?: number): number { return this.toElectronRadius(decimalPlaces); }, // Added classical electron radius shorthand
-        cw: function(decimalPlaces?: number): number { return this.toComptonWavelength(decimalPlaces); }, // Added Compton wavelength shorthand
+        pl: function(decimalPlaces?: number): number | Big { return this.toPlanckLength(decimalPlaces); },
+        fm: function(decimalPlaces?: number): number | Big { return this.toFermi(decimalPlaces); },
+        br: function(decimalPlaces?: number): number | Big { return this.toBohrRadius(decimalPlaces); },
+        Å: function(decimalPlaces?: number): number | Big { return this.toAngstrom(decimalPlaces); }, // Added angstrom shorthand
+        er: function(decimalPlaces?: number): number | Big { return this.toElectronRadius(decimalPlaces); }, // Added classical electron radius shorthand
+        cw: function(decimalPlaces?: number): number | Big { return this.toComptonWavelength(decimalPlaces); }, // Added Compton wavelength shorthand
 
         toMetric: () => toMetric(value),
         toUK: () => toUK(value),

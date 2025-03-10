@@ -5,7 +5,7 @@ import { toUS } from './length.US';
 import { toAstronomical } from "./length.astronomical";
 import { toSpecial } from './length.special';
 import { toMetric } from './length.metric';
-import { roundBig } from '../common';
+import { convertFrom, convertTo, round } from '../common';
 
 const NAUTICAL_RATIOS: { [key: string]: number } = { //to the nautical mile
     foot: 1 / 6076.12,
@@ -15,13 +15,13 @@ const NAUTICAL_RATIOS: { [key: string]: number } = { //to the nautical mile
     nauticalMile: 1
 };
 
-export const toNautical = (value: Big) => {
+export const toNautical = (value: number | Big) => {
     return {
-        toFoot: (decimalPlaces?: number) => roundBig(value.div(NAUTICAL_RATIOS.foot), decimalPlaces),
-        toCableLength: (decimalPlaces?: number) => roundBig(value.div(NAUTICAL_RATIOS.cableLength), decimalPlaces),
-        toFathom: (decimalPlaces?: number) => roundBig(value.div(NAUTICAL_RATIOS.fathom), decimalPlaces),
-        toLeague: (decimalPlaces?: number) => roundBig(value.div(NAUTICAL_RATIOS.league), decimalPlaces),
-        toNauticalMile: (decimalPlaces?: number) => roundBig(value.div(NAUTICAL_RATIOS.nauticalMile), decimalPlaces),
+        toFoot: (decimalPlaces?: number) => round(convertTo(value, NAUTICAL_RATIOS.foot), decimalPlaces),
+        toCableLength: (decimalPlaces?: number) => round(convertTo(value, NAUTICAL_RATIOS.cableLength), decimalPlaces),
+        toFathom: (decimalPlaces?: number) => round(convertTo(value, NAUTICAL_RATIOS.fathom), decimalPlaces),
+        toLeague: (decimalPlaces?: number) => round(convertTo(value, NAUTICAL_RATIOS.league), decimalPlaces),
+        toNauticalMile: (decimalPlaces?: number) => round(convertTo(value, NAUTICAL_RATIOS.nauticalMile), decimalPlaces),
 
         ft: function(decimalPlaces?: number) { return this.toFoot(decimalPlaces); },
         cb: function(decimalPlaces?: number) { return this.toCableLength(decimalPlaces); },
@@ -37,20 +37,20 @@ export const toNautical = (value: Big) => {
     };
 };
 
-const nauticalMileToMetric = (mile: Big) => { return mile.times(1852); };
-const nauticalMileToFoot = (mile: Big) => { return mile.times(6076.12); };
-const nauticalMileToAstronomical = (mile: Big) => { return mile.times(1.5077945e-13); };
+const nauticalMileToMetric = (mile: number | Big) => { return convertFrom(mile, 1852); };
+const nauticalMileToFoot = (mile: number | Big) => { return convertFrom(mile, 6076.12); };
+const nauticalMileToAstronomical = (mile: number | Big) => { return convertFrom(mile, 1.5077945e-13); };
 
 export default {
-    foot: (value: number) => toNautical(new Big(value).times(NAUTICAL_RATIOS.foot)),
-    cableLength: (value: number) => toNautical(new Big(value).times(NAUTICAL_RATIOS.cableLength)),
-    fathom: (value: number) => toNautical(new Big(value).times(NAUTICAL_RATIOS.fathom)),
-    league: (value: number) => toNautical(new Big(value).times(NAUTICAL_RATIOS.league)),
-    nauticalMile: (value: number) => toNautical(new Big(value).times(NAUTICAL_RATIOS.nauticalMile)),
+    foot: (value: number | Big) => toNautical(convertFrom(value, NAUTICAL_RATIOS.foot)),
+    cableLength: (value: number | Big) => toNautical(convertFrom(value, NAUTICAL_RATIOS.cableLength)),
+    fathom: (value: number | Big) => toNautical(convertFrom(value, NAUTICAL_RATIOS.fathom)),
+    league: (value: number | Big) => toNautical(convertFrom(value, NAUTICAL_RATIOS.league)),
+    nauticalMile: (value: number | Big) => toNautical(convertFrom(value, NAUTICAL_RATIOS.nauticalMile)),
 
-    ft: function(value: number) { return this.foot(value); },
-    cb: function(value: number) { return this.cableLength(value); },
-    ftm: function(value: number) { return this.fathom(value); },
-    lg: function(value: number) { return this.league(value); },
-    nmi: function(value: number) { return this.nauticalMile(value); },
+    ft: function(value: number | Big) { return this.foot(value); },
+    cb: function(value: number | Big) { return this.cableLength(value); },
+    ftm: function(value: number | Big) { return this.fathom(value); },
+    lg: function(value: number | Big) { return this.league(value); },
+    nmi: function(value: number | Big) { return this.nauticalMile(value); },
 };

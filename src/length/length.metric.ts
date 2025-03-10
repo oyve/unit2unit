@@ -5,9 +5,9 @@ import { toUS } from './length.US';
 import { toNautical } from './length.nautical';
 import { toSpecial } from './length.special';
 import { toAstronomical } from './length.astronomical';
-import { roundBig } from '../common';
+import { convertFrom, convertTo, round } from '../common';
 
-const METRIC_RATIOS: { [key: string]: number } = {
+export const METRIC_RATIOS: Record<string, number> = {
     attometer: 10 ** -18,
     femtometer: 10 ** -15,
     picometer: 10 ** -12,
@@ -26,25 +26,25 @@ const METRIC_RATIOS: { [key: string]: number } = {
     exameter: 10 ** 18,
 };
 
-export const toMetric = (value: Big) => {
+export const toMetric = (value: number | Big) => {
     return {
-        toAttometer: (decimalPlaces?: number): number => roundBig(value.div(METRIC_RATIOS.attometer), decimalPlaces), // Added attometer conversion
-        toFemtometer: (decimalPlaces?: number): number => roundBig(value.div(METRIC_RATIOS.femtometer), decimalPlaces),
-        toPicometer: (decimalPlaces?: number): number => roundBig(value.div(METRIC_RATIOS.picometer), decimalPlaces),
-        toNanometer: (decimalPlaces?: number): number => roundBig(value.div(METRIC_RATIOS.nanometer), decimalPlaces),
-        toMicrometer: (decimalPlaces?: number): number => roundBig(value.div(METRIC_RATIOS.micrometer), decimalPlaces),
-        toMillimeter: (decimalPlaces?: number): number => roundBig(value.div(METRIC_RATIOS.millimeter), decimalPlaces),
-        toCentimeter: (decimalPlaces?: number): number => roundBig(value.div(METRIC_RATIOS.centimeter), decimalPlaces),
-        toDecimeter: (decimalPlaces?: number): number => roundBig(value.div(METRIC_RATIOS.decimeter), decimalPlaces),
-        toDecameter: (decimalPlaces?: number): number => roundBig(value.div(METRIC_RATIOS.decameter), decimalPlaces),
-        toMeter: (decimalPlaces?: number): number => roundBig(value, decimalPlaces),
-        toHectometer: (decimalPlaces?: number): number => roundBig(value.div(METRIC_RATIOS.hectometer), decimalPlaces),
-        toKilometer: (decimalPlaces?: number): number => roundBig(value.div(METRIC_RATIOS.kilometer), decimalPlaces),
-        toMegameter: (decimalPlaces?: number): number => roundBig(value.div(METRIC_RATIOS.megameter), decimalPlaces),
-        toGigameter: (decimalPlaces?: number): number => roundBig(value.div(METRIC_RATIOS.gigameter), decimalPlaces),
-        toTerameter: (decimalPlaces?: number): number => roundBig(value.div(METRIC_RATIOS.terameter), decimalPlaces),
-        toPetameter: (decimalPlaces?: number): number => roundBig(value.div(METRIC_RATIOS.petameter), decimalPlaces),
-        toExameter: (decimalPlaces?: number): number => roundBig(value.div(METRIC_RATIOS.exameter), decimalPlaces),
+        toAttometer: (decimalPlaces?: number): number | Big => round(convertTo(value, METRIC_RATIOS.attometer), decimalPlaces),
+        toFemtometer: (decimalPlaces?: number): number | Big => round(convertTo(value, METRIC_RATIOS.femtometer), decimalPlaces),
+        toPicometer: (decimalPlaces?: number): number | Big => round(convertTo(value, METRIC_RATIOS.picometer), decimalPlaces),
+        toNanometer: (decimalPlaces?: number): number | Big => round(convertTo(value, METRIC_RATIOS.nanometer), decimalPlaces),
+        toMicrometer: (decimalPlaces?: number): number | Big => round(convertTo(value, METRIC_RATIOS.micrometer), decimalPlaces),
+        toMillimeter: (decimalPlaces?: number): number | Big => round(convertTo(value, METRIC_RATIOS.millimeter), decimalPlaces),
+        toCentimeter: (decimalPlaces?: number): number | Big => round(convertTo(value, METRIC_RATIOS.centimeter), decimalPlaces),
+        toDecimeter: (decimalPlaces?: number): number | Big => round(convertTo(value, METRIC_RATIOS.decimeter), decimalPlaces),
+        toDecameter: (decimalPlaces?: number): number | Big => round(convertTo(value, METRIC_RATIOS.decameter), decimalPlaces),
+        toMeter: (decimalPlaces?: number): number | Big => round(value, decimalPlaces),
+        toHectometer: (decimalPlaces?: number): number |Big => round(convertTo(value, METRIC_RATIOS.hectometer), decimalPlaces),
+        toKilometer: (decimalPlaces?: number): number | Big => round(convertTo(value, METRIC_RATIOS.kilometer), decimalPlaces),
+        toMegameter: (decimalPlaces?: number): number | Big => round(convertTo(value, METRIC_RATIOS.megameter), decimalPlaces),
+        toGigameter: (decimalPlaces?: number): number | Big => round(convertTo(value, METRIC_RATIOS.gigameter), decimalPlaces),
+        toTerameter: (decimalPlaces?: number): number | Big => round(convertTo(value, METRIC_RATIOS.terameter), decimalPlaces),
+        toPetameter: (decimalPlaces?: number): number | Big => round(convertTo(value, METRIC_RATIOS.petameter), decimalPlaces),
+        toExameter: (decimalPlaces?: number): number | Big => round(convertTo(value, METRIC_RATIOS.exameter), decimalPlaces),
 
         am: function(decimalPlaces?: number) { return this.toAttometer(decimalPlaces); }, // Added attometer shorthand
         fm: function(decimalPlaces?: number) { return this.toFemtometer(decimalPlaces); },
@@ -63,7 +63,7 @@ export const toMetric = (value: Big) => {
         Tm: function(decimalPlaces?: number) { return this.toTerameter(decimalPlaces); },
         Pm: function(decimalPlaces?: number) { return this.toPetameter(decimalPlaces); },
         Em: function(decimalPlaces?: number) { return this.toExameter(decimalPlaces); },
-
+        
         toUK: () => toUK(meterToFoot(value)),
         toUS: () => toUS(meterToFoot(value)),
         toNautical: () => toNautical(meterToNauticalMile(value)),
@@ -72,44 +72,44 @@ export const toMetric = (value: Big) => {
     };
 };
 
-const meterToNauticalMile = (meter: Big) => { return meter.times(1 / 1852); };
-const meterToFoot = (meter: Big) => { return meter.times(3.28084); };
-const meterToAstronomicalUnit = (meter: Big) => { return meter.times(6.68459e-12); };
+const meterToNauticalMile = (meter: number | Big) => { return convertFrom(meter, 1 / 1852); };
+const meterToFoot = (meter: number | Big) => { return convertFrom(meter, 3.28084); };
+const meterToAstronomicalUnit = (meter: number | Big) => { return convertFrom(meter, 6.68459e-12); };
 
 export default {
-    attometer: (value: number) => toMetric(new Big(value).times(METRIC_RATIOS.attometer)), // Added attometer
-    femtometer: (value: number) => toMetric(new Big(value).times(METRIC_RATIOS.femtometer)),
-    picometer: (value: number) => toMetric(new Big(value).times(METRIC_RATIOS.picometer)),
-    nanometer: (value: number) => toMetric(new Big(value).times(METRIC_RATIOS.nanometer)),
-    micrometer: (value: number) => toMetric(new Big(value).times(METRIC_RATIOS.micrometer)),
-    millimeter: (value: number) => toMetric(new Big(value).times(METRIC_RATIOS.millimeter)),
-    centimeter: (value: number) => toMetric(new Big(value).times(METRIC_RATIOS.centimeter)),
-    decimeter: (value: number) => toMetric(new Big(value).times(METRIC_RATIOS.decimeter)),
-    decameter: (value: number) => toMetric(new Big(value).times(METRIC_RATIOS.decameter)),
-    meter: (value: number) => toMetric(new Big(value)),
-    hectometer: (value: number) => toMetric(new Big(value).times(METRIC_RATIOS.hectometer)),
-    kilometer: (value: number) => toMetric(new Big(value).times(METRIC_RATIOS.kilometer)),
-    megameter: (value: number) => toMetric(new Big(value).times(METRIC_RATIOS.megameter)),
-    gigameter: (value: number) => toMetric(new Big(value).times(METRIC_RATIOS.gigameter)),
-    terameter: (value: number) => toMetric(new Big(value).times(METRIC_RATIOS.terameter)),
-    petameter: (value: number) => toMetric(new Big(value).times(METRIC_RATIOS.petameter)),
-    exameter: (value: number) => toMetric(new Big(value).times(METRIC_RATIOS.exameter)),
+    attometer: (value: number | Big) => toMetric(convertFrom(value, METRIC_RATIOS.attometer)), // Added attometer
+    femtometer: (value: number | Big) => toMetric(convertFrom(value, METRIC_RATIOS.femtometer)),
+    picometer: (value: number | Big) => toMetric(convertFrom(value, METRIC_RATIOS.picometer)),
+    nanometer: (value: number | Big) => toMetric(convertFrom(value, METRIC_RATIOS.nanometer)),
+    micrometer: (value: number | Big) => toMetric(convertFrom(value, METRIC_RATIOS.micrometer)),
+    millimeter: (value: number | Big) => toMetric(convertFrom(value, METRIC_RATIOS.millimeter)),
+    centimeter: (value: number | Big) => toMetric(convertFrom(value, METRIC_RATIOS.centimeter)),
+    decimeter: (value: number | Big) => toMetric(convertFrom(value, METRIC_RATIOS.decimeter)),
+    decameter: (value: number | Big) => toMetric(convertFrom(value, METRIC_RATIOS.decameter)),
+    meter: (value: number | Big) => toMetric(value),
+    hectometer: (value: number | Big) => toMetric(convertFrom(value, METRIC_RATIOS.hectometer)),
+    kilometer: (value: number | Big) => toMetric(convertFrom(value, METRIC_RATIOS.kilometer)),
+    megameter: (value: number | Big) => toMetric(convertFrom(value, METRIC_RATIOS.megameter)),
+    gigameter: (value: number | Big) => toMetric(convertFrom(value, METRIC_RATIOS.gigameter)),
+    terameter: (value: number | Big) => toMetric(convertFrom(value, METRIC_RATIOS.terameter)),
+    petameter: (value: number | Big) => toMetric(convertFrom(value, METRIC_RATIOS.petameter)),
+    exameter: (value: number | Big) => toMetric(convertFrom(value, METRIC_RATIOS.exameter)),
 
-    am: function(value: number) { return this.attometer(value); },
-    fm: function(value: number) { return this.femtometer(value); },
-    pm: function(value: number) { return this.picometer(value); },
-    nm: function(value: number) { return this.nanometer(value); },
-    um: function(value: number) { return this.micrometer(value); },
-    mm: function(value: number) { return this.millimeter(value); },
-    cm: function(value: number) { return this.centimeter(value); },
-    dm: function(value: number) { return this.decimeter(value); },
-    dam: function(value: number) { return this.decameter(value); },
-    m: function(value: number) { return this.meter(value); },
-    hm: function(value: number) { return this.hectometer(value); },
-    km: function(value: number) { return this.kilometer(value); },
-    Mm: function(value: number) { return this.megameter(value); },
-    Gm: function(value: number) { return this.gigameter(value); },
-    Tm: function(value: number) { return this.terameter(value); },
-    Pm: function(value: number) { return this.petameter(value); },
-    Em: function(value: number) { return this.exameter(value); },
+    am: function(value: number | Big) { return this.attometer(value); },
+    fm: function(value: number | Big) { return this.femtometer(value); },
+    pm: function(value: number | Big) { return this.picometer(value); },
+    nm: function(value: number | Big) { return this.nanometer(value); },
+    um: function(value: number | Big) { return this.micrometer(value); },
+    mm: function(value: number | Big) { return this.millimeter(value); },
+    cm: function(value: number | Big) { return this.centimeter(value); },
+    dm: function(value: number | Big) { return this.decimeter(value); },
+    dam: function(value: number | Big) { return this.decameter(value); },
+    m: function(value: number | Big) { return this.meter(value); },
+    hm: function(value: number | Big) { return this.hectometer(value); },
+    km: function(value: number | Big) { return this.kilometer(value); },
+    Mm: function(value: number | Big) { return this.megameter(value); },
+    Gm: function(value: number | Big) { return this.gigameter(value); },
+    Tm: function(value: number | Big) { return this.terameter(value); },
+    Pm: function(value: number | Big) { return this.petameter(value); },
+    Em: function(value: number | Big) { return this.exameter(value); },
 };

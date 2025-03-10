@@ -1,8 +1,9 @@
+import Big from 'big.js';
 import Metric from '../../src/volume/volume.metric';
 
 describe('Metric Volume Conversions', () => {
     test('Cubic meter to all', () => {
-        const value = Metric.cubicMeter(10);
+        const value = Metric.cubicMeter(new Big(10));
         expect(value.toCubicDecimeter()).toBe(10000);
         expect(value.toCubicCentimeter()).toBe(10000000);
         expect(value.toCubicMillimeter()).toBe(10000000000);

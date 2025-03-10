@@ -1,6 +1,6 @@
-import datasize from '../src/datasize';
+import datasize from '../src/data';
 
-describe('Datasize Conversion', () => {
+describe('Data Conversion', () => {
     it('should correctly convert bits to other units', () => {
         const value = datasize.bit(8);
         expect(value.toBit()).toBe(8);

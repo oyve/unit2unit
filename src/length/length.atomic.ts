@@ -6,12 +6,10 @@ import { toNautical } from './length.nautical';
 import { toSpecial } from './length.special';
 import { toMetric } from './length.metric';
 import { toAstronomical } from './length.astronomical';
-import { convertTo, round } from '../common';
+import { convertFrom } from '../common';
+import UnitConverter from '../unitConverter';
 
-// Set the decimal places to a higher value
-Big.DP = 40;
-
-const ATOMIC_RATIOS: { [key: string]: number } = { // to the Bohr radius
+const ATOMIC_RATIOS = { // to the Bohr radius
     planckLength: 1.616255e-35,
     fermi: 1e-15,
     bohrRadius: 1,
@@ -20,43 +18,24 @@ const ATOMIC_RATIOS: { [key: string]: number } = { // to the Bohr radius
     comptonWavelength: 2.42631e-12 // Added Compton wavelength
 };
 
-export const toAtomic = (value: number | Big) => {
-    return {
-        toPlanckLength: (decimalPlaces?: number): number | Big => round(convertTo(value, ATOMIC_RATIOS.planckLength), decimalPlaces),
-        toFermi: (decimalPlaces?: number): number | Big => round(convertTo(value, ATOMIC_RATIOS.fermi), decimalPlaces),
-        toBohrRadius: (decimalPlaces?: number): number | Big => round(convertTo(value, ATOMIC_RATIOS.bohrRadius), decimalPlaces),
-        toAngstrom: (decimalPlaces?: number): number | Big => round(convertTo(value, ATOMIC_RATIOS.angstrom), decimalPlaces), // Added angstrom conversion
-        toElectronRadius: (decimalPlaces?: number): number | Big => round(convertTo(value, ATOMIC_RATIOS.electronRadius), decimalPlaces), // Added classical electron radius conversion
-        toComptonWavelength: (decimalPlaces?: number): number | Big => round(convertTo(value, ATOMIC_RATIOS.comptonWavelength), decimalPlaces), // Added Compton wavelength conversion
+const converter = new UnitConverter(ATOMIC_RATIOS);
 
-        pl: function(decimalPlaces?: number): number | Big { return this.toPlanckLength(decimalPlaces); },
-        fm: function(decimalPlaces?: number): number | Big { return this.toFermi(decimalPlaces); },
-        br: function(decimalPlaces?: number): number | Big { return this.toBohrRadius(decimalPlaces); },
-        Å: function(decimalPlaces?: number): number | Big { return this.toAngstrom(decimalPlaces); }, // Added angstrom shorthand
-        er: function(decimalPlaces?: number): number | Big { return this.toElectronRadius(decimalPlaces); }, // Added classical electron radius shorthand
-        cw: function(decimalPlaces?: number): number | Big { return this.toComptonWavelength(decimalPlaces); }, // Added Compton wavelength shorthand
-
-        toMetric: () => toMetric(value),
-        toUK: () => toUK(value),
-        toUS: () => toUS(value),
-        toNautical: () => toNautical(value),
-        toSpecial: () => toSpecial(value),
-        toAstronomical: () => toAstronomical(value)
-    };
-};
+export const toAtomic = (value: number | Big) => ({
+    ...converter.generateConversions(value),
+    toUK: () => toUK(value, 3.28084),
+    toUS: () => toUS(value, 3.28084),
+    toSpecial: () => toSpecial(value),
+    toNautical: () => toNautical(value, 1 / 1852),
+    toMetric: () => toMetric(value, 6.68459e-12),
+});
 
 export default {
+    from: (value: number | Big, unit: string) => converter.from(value, unit),
+      
     planckLength: (value: number) => toAtomic(new Big(value * ATOMIC_RATIOS.planckLength)),
     fermi: (value: number) => toAtomic(new Big(value * ATOMIC_RATIOS.fermi)),
     bohrRadius: (value: number) => toAtomic(new Big(value * ATOMIC_RATIOS.bohrRadius)),
     angstrom: (value: number) => toAtomic(new Big(value * ATOMIC_RATIOS.angstrom)), // Added angstrom
     electronRadius: (value: number) => toAtomic(new Big(value * ATOMIC_RATIOS.electronRadius)), // Added classical electron radius
     comptonWavelength: (value: number) => toAtomic(new Big(value * ATOMIC_RATIOS.comptonWavelength)), // Added Compton wavelength
-
-    pl: function(value: number) { return this.planckLength(value); },
-    fm: function(value: number) { return this.fermi(value); },
-    br: function(value: number) { return this.bohrRadius(value); },
-    Å: function(value: number) { return this.angstrom(value); }, // Added angstrom shorthand
-    er: function(value: number) { return this.electronRadius(value); }, // Added classical electron radius shorthand
-    cw: function(value: number) { return this.comptonWavelength(value); } // Added Compton wavelength shorthand
 };

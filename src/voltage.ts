@@ -1,9 +1,8 @@
-'use strict';
-
 import Big from "big.js";
-import { convertFrom, convertTo } from "./common";
+import { convertFrom } from "./common";
+import UnitConverter from "./unitConverter";
 
-const VOLT_RATIOS: Record<string, number> = {
+const VOLT_RATIOS = {
     volt: 1,
     microVolt: 1e-6,
     milliVolt: 0.001,
@@ -11,17 +10,15 @@ const VOLT_RATIOS: Record<string, number> = {
     megaVolt: 1e6
 };
 
-const to = (value: number | Big) => {
-    return {
-        toVolt: (): number | Big => value,
-        toMicroVolt: (): number | Big => convertTo(value, VOLT_RATIOS.microVolt),
-        toMilliVolt: (): number | Big => convertTo(value, VOLT_RATIOS.milliVolt),
-        toKiloVolt: (): number | Big => convertTo(value, VOLT_RATIOS.kiloVolt),
-        toMegaVolt: (): number | Big => convertTo(value, VOLT_RATIOS.megaVolt),
-    };
-};
+const converter = new UnitConverter(VOLT_RATIOS);
+
+export const to = (value: number | Big) => ({
+    ...converter.generateConversions(value),
+});
 
 export default {
+    from: (value: number | Big, unit: string) => converter.from(value, unit),
+
     volt: (value: number | Big) => to(value),
     microVolt: (value: number | Big) => to(convertFrom(value, VOLT_RATIOS.microVolt)),
     milliVolt: (value: number | Big) => to(convertFrom(value, VOLT_RATIOS.milliVolt)),

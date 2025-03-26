@@ -13,7 +13,7 @@ const VOLT_RATIOS = {
 const converter = new UnitConverter(VOLT_RATIOS);
 
 export const to = (value: number | Big) => ({
-    ...converter.generateConversions(value),
+    ...converter.createToMethods(value),
 });
 
 export default {

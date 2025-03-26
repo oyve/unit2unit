@@ -33,7 +33,7 @@ export const toMetric = (value: number | Big, ratio?: number) => {
     if(ratio !== undefined && ratio > 0) value = converter.fromRatio(value, ratio);
 
     return {
-        ...converter.generateConversions(value),
+        ...converter.createToMethods(value),
         toUK: () => toUK(value, 3.28084),
         toUS: () => toUS(value, 3.28084),
         toSpecial: () => toSpecial(value),
@@ -44,22 +44,5 @@ export const toMetric = (value: number | Big, ratio?: number) => {
 
 export default {
     from: (value: number | Big, unit: string) => converter.from(value, unit),
-
-    attometer: (value: number | Big) => toMetric(converter.fromRatio(value, METRIC_RATIOS.attometer)),
-    femtometer: (value: number | Big) => toMetric(converter.fromRatio(value, METRIC_RATIOS.femtometer)),
-    picometer: (value: number | Big) => toMetric(converter.fromRatio(value, METRIC_RATIOS.picometer)),
-    nanometer: (value: number | Big) => toMetric(converter.fromRatio(value, METRIC_RATIOS.nanometer)),
-    micrometer: (value: number | Big) => toMetric(converter.fromRatio(value, METRIC_RATIOS.micrometer)),
-    millimeter: (value: number | Big) => toMetric(converter.fromRatio(value, METRIC_RATIOS.millimeter)),
-    centimeter: (value: number | Big) => toMetric(converter.fromRatio(value, METRIC_RATIOS.centimeter)),
-    decimeter: (value: number | Big) => toMetric(converter.fromRatio(value, METRIC_RATIOS.decimeter)),
-    decameter: (value: number | Big) => toMetric(converter.fromRatio(value, METRIC_RATIOS.decameter)),
-    meter: (value: number | Big) => toMetric(value),
-    hectometer: (value: number | Big) => toMetric(converter.fromRatio(value, METRIC_RATIOS.hectometer)),
-    kilometer: (value: number | Big) => toMetric(converter.fromRatio(value, METRIC_RATIOS.kilometer)),
-    megameter: (value: number | Big) => toMetric(converter.fromRatio(value, METRIC_RATIOS.megameter)),
-    gigameter: (value: number | Big) => toMetric(converter.fromRatio(value, METRIC_RATIOS.gigameter)),
-    terameter: (value: number | Big) => toMetric(converter.fromRatio(value, METRIC_RATIOS.terameter)),
-    petameter: (value: number | Big) => toMetric(converter.fromRatio(value, METRIC_RATIOS.petameter)),
-    exameter: (value: number | Big) => toMetric(converter.fromRatio(value, METRIC_RATIOS.exameter)),
+    ...converter.createFromMethods(toMetric)
 };

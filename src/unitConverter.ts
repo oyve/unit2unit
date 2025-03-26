@@ -7,6 +7,10 @@ type Conversions<T extends Record<string, number>> = {
   [key in keyof T as `to${Capitalize<key & string>}`]: ConversionFunction;
 };
 
+type UnitMethods<T extends Record<string, number>, R> = {
+  [key in keyof T]: (value: number | Big) => R;
+};
+
 class UnitConverter<T extends Record<string, number>> {
   private ratios: T;
 
@@ -18,7 +22,7 @@ class UnitConverter<T extends Record<string, number>> {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
-  public generateConversions(value: number | Big): Conversions<T> {
+  public createToMethods(value: number | Big): Conversions<T> {
     const conversions: Record<string, ConversionFunction> = {};
 
     Object.keys(this.ratios).forEach((unit) => {
@@ -34,24 +38,39 @@ class UnitConverter<T extends Record<string, number>> {
     return conversions as Conversions<T>;
   }
 
+  
+  private _itemsProvider: (value: number | Big) => Record<string, () => any> = () => ({});
+
+  // Setter to inject the property call logic from the caller
+  setItemsProvider(provider: (value: number | Big) => Record<string, () => any>): this {
+    this._itemsProvider = provider;
+    return this;
+  }
+
+  // Method to access the dynamically injected properties (maintaining fluent chaining with correct types)
+  tos<T>(value: number | Big): T {
+    const items = this._itemsProvider(value);
+    return items as T;  // Type casting to the generic type `T`
+  }
+
   from(value: number | Big, unit: string) {
     const ratio = this.ratios[unit];
 
     if (!ratio) {
       throw new Error(`Unknown unit: ${ratio}`);
     };
-    
-    return {
-        to: (targetUnit: string) => {
-          const targetRatio = this.ratios[targetUnit];
+    return this.tos(5)
+    // return {
+    //     to: (targetUnit: string) => {
+    //       const targetRatio = this.ratios[targetUnit];
           
-          if (!targetRatio) {
-            throw new Error(`Unknown target unit: ${targetUnit}`);
-          }
+    //       if (!targetRatio) {
+    //         throw new Error(`Unknown target unit: ${targetUnit}`);
+    //       }
     
-          return convertTo(convertFrom(value, ratio), targetRatio);
-        }
-    }
+    //       return convertTo(convertFrom(value, ratio), targetRatio);
+    //     }
+    // }
   };
 
   fromRatio(value: number | Big, ratio: number): number | Big {
@@ -72,8 +91,20 @@ class UnitConverter<T extends Record<string, number>> {
             console.log("");
         }
     });
-};
+  };
 
+  public createFromMethods<R>(
+    conversionFn: (value: number | Big, ratio?: number) => R): UnitMethods<T, R> {
+    const methods = {} as UnitMethods<T, R>;
+    Object.keys(this.ratios).forEach((unit) => {
+      methods[unit as keyof T] = (value: number | Big) => {
+        const ownRatio = this.ratios[unit as keyof T];
+        const baseValue = convertFrom(value, ownRatio);
+        return conversionFn(baseValue); //no need for ratio when not doing between unit families
+      };
+    });
+    return methods;
+  }
 };
 
 export default UnitConverter

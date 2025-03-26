@@ -28,7 +28,7 @@ export const toAstronomical = (value: number | Big, ratio?: number) => {
     if(ratio !== undefined && ratio > 0) value = converter.fromRatio(value, ratio);
 
     return {
-        ...converter.generateConversions(value),
+        ...converter.createToMethods(value),
         toUK: () => toUK(value, 3.28084),
         toUS: () => toUS(value, 3.28084),
         toSpecial: () => toSpecial(value),
@@ -38,14 +38,5 @@ export const toAstronomical = (value: number | Big, ratio?: number) => {
 };
 
 export default {
-    astronomicUnit: (value: number | Big) => toAstronomical(convertFrom(value, ASTRONOMICAL_RATIOS.astronomicUnit)),
-    lightyear: (value: number | Big) => toAstronomical(convertFrom(value, ASTRONOMICAL_RATIOS.lightyear)),
-    megaparsec: (value: number | Big) => toAstronomical(convertFrom(value, ASTRONOMICAL_RATIOS.megaparsec)),
-    parsec: (value: number | Big) => toAstronomical(convertFrom(value, ASTRONOMICAL_RATIOS.parsec)),
-    lightsecond: (value: number | Big) => toAstronomical(convertFrom(value, ASTRONOMICAL_RATIOS.lightsecond)),
-    lightminute: (value: number | Big) => toAstronomical(convertFrom(value, ASTRONOMICAL_RATIOS.lightminute)),
-    lighthour: (value: number | Big) => toAstronomical(convertFrom(value, ASTRONOMICAL_RATIOS.lighthour)),
-    lightday: (value: number | Big) => toAstronomical(convertFrom(value, ASTRONOMICAL_RATIOS.lightday)),
-    lightweek: (value: number | Big) => toAstronomical(convertFrom(value, ASTRONOMICAL_RATIOS.lightweek)),
-    bohr: (value: number | Big) => toAstronomical(convertFrom(value, ASTRONOMICAL_RATIOS.bohr)),
+    ...converter.createFromMethods(toAstronomical)
 };

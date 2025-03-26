@@ -21,7 +21,7 @@ export const toNautical = (value: number | Big, ratio?: number) => {
     if(ratio !== undefined && ratio > 0) value = converter.fromRatio(value, ratio);
 
     return {
-        ...converter.generateConversions(value),
+        ...converter.createToMethods(value),
         toUK: () => toUK(value, 3.28084),
         toUS: () => toUS(value, 3.28084),
         toSpecial: () => toSpecial(value),
@@ -32,16 +32,5 @@ export const toNautical = (value: number | Big, ratio?: number) => {
 
 export default {
     from: (value: number | Big, unit: string) => converter.from(value, unit),
-
-    foot: (value: number | Big) => toNautical(converter.fromRatio(value, NAUTICAL_RATIOS.foot)),
-    cableLength: (value: number | Big) => toNautical(converter.fromRatio(value, NAUTICAL_RATIOS.cableLength)),
-    fathom: (value: number | Big) => toNautical(converter.fromRatio(value, NAUTICAL_RATIOS.fathom)),
-    league: (value: number | Big) => toNautical(converter.fromRatio(value, NAUTICAL_RATIOS.league)),
-    nauticalMile: (value: number | Big) => toNautical(converter.fromRatio(value, NAUTICAL_RATIOS.nauticalMile)),
-
-    // ft: function(value: number | Big) { return this.foot(value); },
-    // cb: function(value: number | Big) { return this.cableLength(value); },
-    // ftm: function(value: number | Big) { return this.fathom(value); },
-    // lg: function(value: number | Big) { return this.league(value); },
-    // nmi: function(value: number | Big) { return this.nauticalMile(value); },
+    ...converter.createFromMethods(toNautical)
 };

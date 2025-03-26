@@ -20,7 +20,7 @@ export const toSpecial = (value: number | Big, ratio?: number) => {
     if(ratio !== undefined && ratio > 0) value = converter.fromRatio(value, ratio);
 
     return {
-        ...converter.generateConversions(value),
+        ...converter.createToMethods(value),
         toMetric: () => toMetric(value),
         toUK: () => toUK(value),
         toUS: () => toUS(value),
@@ -31,12 +31,5 @@ export const toSpecial = (value: number | Big, ratio?: number) => {
 
 export default {
     from: (value: number | Big, unit: string) => converter.from(value, unit),
-      
-    scandinavianMile: (value: number | Big) => toSpecial(convertFrom(value, SPECIAL_RATIOS.scandinavianMile)),
-    barleycorn: (value: number | Big) => toSpecial(convertFrom(value, SPECIAL_RATIOS.barleycorn)),
-    cubit: (value: number | Big) => toSpecial(convertFrom(value, SPECIAL_RATIOS.cubit)),
-
-    mil: function(value: number | Big) { return this.scandinavianMile(value); },
-    bc: function(value: number | Big) { return this.barleycorn(value); },
-    c: function(value: number | Big) { return this.cubit(value); },
+    ...converter.createFromMethods(toSpecial)
 };

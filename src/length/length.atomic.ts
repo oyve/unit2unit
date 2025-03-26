@@ -21,7 +21,7 @@ const ATOMIC_RATIOS = { // to the Bohr radius
 const converter = new UnitConverter(ATOMIC_RATIOS);
 
 export const toAtomic = (value: number | Big) => ({
-    ...converter.generateConversions(value),
+    ...converter.createToMethods(value),
     toUK: () => toUK(value, 3.28084),
     toUS: () => toUS(value, 3.28084),
     toSpecial: () => toSpecial(value),
@@ -31,11 +31,5 @@ export const toAtomic = (value: number | Big) => ({
 
 export default {
     from: (value: number | Big, unit: string) => converter.from(value, unit),
-      
-    planckLength: (value: number) => toAtomic(new Big(value * ATOMIC_RATIOS.planckLength)),
-    fermi: (value: number) => toAtomic(new Big(value * ATOMIC_RATIOS.fermi)),
-    bohrRadius: (value: number) => toAtomic(new Big(value * ATOMIC_RATIOS.bohrRadius)),
-    angstrom: (value: number) => toAtomic(new Big(value * ATOMIC_RATIOS.angstrom)), // Added angstrom
-    electronRadius: (value: number) => toAtomic(new Big(value * ATOMIC_RATIOS.electronRadius)), // Added classical electron radius
-    comptonWavelength: (value: number) => toAtomic(new Big(value * ATOMIC_RATIOS.comptonWavelength)), // Added Compton wavelength
+    ...converter.createFromMethods(toAtomic)
 };

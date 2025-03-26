@@ -24,113 +24,68 @@ describe('Metric Length Conversions', () => {
     });
 });
 
-describe('Attometer Length Conversions', () => {
-    test('test', () => {
+describe('To the meter', () => {
+    test('Attometer', () => {
         const meter = Metric.attometer(1e21);
         expect(meter.toMeter(0)).toBe(1000);
     });
-});
-
-describe('Femtometer Length Conversions', () => {
-    test('test', () => {
+    test('Femtometer', () => {
         const meter = Metric.femtometer(1e18);
         expect(meter.toMeter(0)).toBe(1000);
     });
-});
-
-describe('Picometer Length Conversions', () => {
-    test('test', () => {
+    test('Picometer', () => {
         const meter = Metric.picometer(1e15);
         expect(meter.toMeter(0)).toBe(1000);
     });
-});
-
-describe('Nanometer Length Conversions', () => {
-    test('test', () => {
+    test('Nanometer', () => {
         const meter = Metric.nanometer(1e12);
         expect(meter.toMeter(0)).toBe(1000);
     });
-});
-
-describe('Micrometer Length Conversions', () => {
-    test('test', () => {
+    test('Micrometer', () => {
         const meter = Metric.micrometer(1e9);
         expect(meter.toMeter(0)).toBe(1000);
     });
-});
-
-describe('Millimeter Length Conversions', () => {
-    test('test', () => {
+    test('Millimeter', () => {
         const meter = Metric.millimeter(1e6);
         expect(meter.toMeter(0)).toBe(1000);
     });
-});
-
-describe('Centimeter Length Conversions', () => {
-    test('test', () => {
+    test('Centimeter', () => {
         const meter = Metric.centimeter(1e5);
         expect(meter.toMeter(0)).toBe(1000);
     });
-});
-
-describe('Decimeter Length Conversions', () => {
-    test('test', () => {
+    test('Decimeter', () => {
         const meter = Metric.decimeter(1e4);
         expect(meter.toMeter(0)).toBe(1000);
     });
-});
-
-describe('Decameter Length Conversions', () => {
-    test('test', () => {
+    test('Decameter', () => {
         const meter = Metric.decameter(1e2);
         expect(meter.toMeter(0)).toBe(1000);
     });
-});
-
-describe('Hectometer Length Conversions', () => {
-    test('test', () => {
+    test('Hectometer', () => {
         const meter = Metric.hectometer(1e1);
         expect(meter.toMeter(0)).toBe(1000);
     });
-});
-
-describe('Kilometer Length Conversions', () => {
-    test('test', () => {
+    test('Kilometer', () => {
         const meter = Metric.kilometer(1);
         expect(meter.toMeter(0)).toBe(1000);
     });
-});
-
-describe('Megameter Length Conversions', () => {
-    test('test', () => {
+    test('Megameter', () => {
         const meter = Metric.megameter(0.001);
         expect(meter.toMeter(0)).toBe(1000);
     });
-});
-
-describe('Gigameter Length Conversions', () => {
-    test('test', () => {
+    test('Gigameter', () => {
         const meter = Metric.gigameter(0.000001);
         expect(meter.toMeter(0)).toBe(1000);
     });
-});
-
-describe('Terameter Length Conversions', () => {
-    test('test', () => {
+    test('Terameter', () => {
         const meter = Metric.terameter(0.000000001);
         expect(meter.toMeter(0)).toBe(1000);
     });
-});
-
-describe('Petameter Length Conversions', () => {
-    test('test', () => {
+    test('Petameter', () => {
         const meter = Metric.petameter(0.000000000001);
         expect(meter.toMeter(0)).toBe(1000);
     });
-});
-
-describe('Exameter Length Conversions', () => {
-    test('test', () => {
+    test('Exameter', () => {
         const meter = Metric.exameter(0.000000000000001);
         expect(meter.toMeter(0)).toBe(1000);
     });

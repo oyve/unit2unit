@@ -68,8 +68,8 @@ describe('Millimeter Length Conversions', () => {
 
 describe('Centimeter Length Conversions', () => {
     test('test', () => {
-        const meter = Metric.centimeter(100);
-        expect(meter.toMeter(0)).toBe(1);
+        const meter = Metric.centimeter(1e5);
+        expect(meter.toMeter(0)).toBe(1000);
     });
 });
 

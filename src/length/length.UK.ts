@@ -1,5 +1,4 @@
 import Big from 'big.js';
-
 import { toMetric } from './length.metric';
 import { toUS } from './length.US';
 import { toNautical } from './length.nautical';

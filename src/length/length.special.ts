@@ -1,11 +1,9 @@
 import Big from 'big.js';
-
 import { toMetric } from './length.metric';
 import { toUK } from './length.UK';
 import { toUS } from './length.US';
 import { toNautical } from './length.nautical';
 import { toAstronomical } from "./length.astronomical";
-import { convertFrom } from '../common';
 import UnitConverter from '../unitConverter';
 
 const SPECIAL_RATIOS = { //to the meter

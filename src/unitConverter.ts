@@ -1,5 +1,5 @@
 import Big from "big.js";
-import { convertFrom, convertTo, round } from "./common";
+import { round } from "./common";
 
 type ConversionFunction = (decimalPlaces?: number) => number | Big;
 
@@ -31,7 +31,7 @@ class UnitConverter<T extends Record<string, number>> {
 
       // Define conversion functions dynamically
       conversions[conversionKey] = (decimalPlaces?: number) => {
-        return round(convertTo(value, ratio), decimalPlaces);
+        return round(this.toRatio(value, ratio), decimalPlaces);
       };
     });
 
@@ -59,18 +59,18 @@ class UnitConverter<T extends Record<string, number>> {
     if (!ratio) {
       throw new Error(`Unknown unit: ${ratio}`);
     };
-    return this.tos(5)
-    // return {
-    //     to: (targetUnit: string) => {
-    //       const targetRatio = this.ratios[targetUnit];
+    // return this.tos(5)
+    return {
+        to: (targetUnit: string) => {
+          const targetRatio = this.ratios[targetUnit];
           
-    //       if (!targetRatio) {
-    //         throw new Error(`Unknown target unit: ${targetUnit}`);
-    //       }
+          if (!targetRatio) {
+            throw new Error(`Unknown target unit: ${targetUnit}`);
+          }
     
-    //       return convertTo(convertFrom(value, ratio), targetRatio);
-    //     }
-    // }
+          return this.toRatio(this.fromRatio(value, ratio), targetRatio);
+        }
+    }
   };
 
   fromRatio(value: number | Big, ratio: number): number | Big {
@@ -99,7 +99,7 @@ class UnitConverter<T extends Record<string, number>> {
     Object.keys(this.ratios).forEach((unit) => {
       methods[unit as keyof T] = (value: number | Big) => {
         const ownRatio = this.ratios[unit as keyof T];
-        const baseValue = convertFrom(value, ownRatio);
+        const baseValue = this.fromRatio(value, ownRatio);
         return conversionFn(baseValue); //no need for ratio when not doing between unit families
       };
     });

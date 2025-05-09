@@ -1,12 +1,10 @@
 import Big from 'big.js';
-
 import { toUK } from './length.UK';
 import { toUS } from './length.US';
 import { toNautical } from './length.nautical';
 import { toSpecial } from './length.special';
 import { toMetric } from './length.metric';
 import { toAstronomical } from './length.astronomical';
-import { convertFrom } from '../common';
 import UnitConverter from '../unitConverter';
 
 const ATOMIC_RATIOS = { // to the Bohr radius
@@ -27,6 +25,7 @@ export const toAtomic = (value: number | Big) => ({
     toSpecial: () => toSpecial(value),
     toNautical: () => toNautical(value, 1 / 1852),
     toMetric: () => toMetric(value, 6.68459e-12),
+    //toAstronomical: () => toAstronomical(value, 6.68459e-12) // Removed toAstronomical
 });
 
 export default {

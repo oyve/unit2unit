@@ -18,10 +18,5 @@ export const to = (value: number | Big) => ({
 
 export default {
     from: (value: number | Big, unit: string) => converter.from(value, unit),
-
-    volt: (value: number | Big) => to(value),
-    microVolt: (value: number | Big) => to(convertFrom(value, VOLT_RATIOS.microVolt)),
-    milliVolt: (value: number | Big) => to(convertFrom(value, VOLT_RATIOS.milliVolt)),
-    kiloVolt: (value: number | Big) => to(convertFrom(value, VOLT_RATIOS.kiloVolt)),
-    megaVolt: (value: number | Big) => to(convertFrom(value, VOLT_RATIOS.megaVolt))
+    ...converter.createFromMethods(to)
 };

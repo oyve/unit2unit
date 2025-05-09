@@ -1,11 +1,9 @@
 import Big from 'big.js';
-
 import { toMetric } from './length.metric'
 import { toUK } from './length.UK';
 import { toNautical } from './length.nautical';
 import { toSpecial } from './length.special';
 import { toAstronomical } from "./length.astronomical";
-import { convertFrom } from '../common';
 import UnitConverter from '../unitConverter';
 
 const US_RATIOS = { //to the foot = 1
